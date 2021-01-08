@@ -9,6 +9,8 @@ spring:
     hikari:
       max-lifetime: 1000
       maximum-pool-size: 10
+
+
 server:
   port: 8080
 
