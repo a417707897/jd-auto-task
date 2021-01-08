@@ -5,7 +5,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
-    url: jdbc:mysql://192.168.188.130:3306/Jd_Auto_Task
+    url: jdbc:mysql://zyl001:3306/Jd_Auto_Task
     hikari:
       max-lifetime: 1000
       maximum-pool-size: 10
