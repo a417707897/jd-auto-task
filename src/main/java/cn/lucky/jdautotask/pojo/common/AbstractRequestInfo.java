@@ -108,7 +108,7 @@ public abstract class AbstractRequestInfo<T> {
             builder.queryParam(key, value);
         });
 
-        log.info("url:{},拼接成功,拼接后的效果:{}", this.url, builder.build().toString());
+        log.info("url:【{}】,拼接成功,拼接后的效果:【{}】", this.url, builder.build().toString());
         this.url = builder.build().toString();
     }
 

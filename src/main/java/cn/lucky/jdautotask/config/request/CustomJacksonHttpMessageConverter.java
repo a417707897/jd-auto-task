@@ -17,6 +17,6 @@ public class CustomJacksonHttpMessageConverter extends MappingJackson2HttpMessag
         super(objectMapper);
         // 这里是重点，增加支持的类型，看你的情况加
         // 我这里目前只需要加个 TEXT/PLAIN
-        setSupportedMediaTypes(Arrays.asList(MediaType.ALL));
+        setSupportedMediaTypes(Arrays.asList(MediaType.TEXT_PLAIN));
     }
 }

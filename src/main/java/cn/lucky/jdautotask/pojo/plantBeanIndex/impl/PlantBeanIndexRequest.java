@@ -3,9 +3,6 @@ package cn.lucky.jdautotask.pojo.plantBeanIndex.impl;
 import cn.lucky.jdautotask.pojo.enums.RequestWayType;
 import cn.lucky.jdautotask.pojo.plantBeanIndex.AbstractRequestPlantBeanIndex;
 import lombok.NonNull;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
-import org.springframework.web.client.RestTemplate;
 
 /*
  * @Author zyl
@@ -24,14 +21,7 @@ public class PlantBeanIndexRequest extends AbstractRequestPlantBeanIndex {
         requestWayType = RequestWayType.POST;
     }
 
-    /*
-     * @Author zyl
-     * @Description 设置头信息
-     * @Date 2021/1/14 17:18
-     * @Param [cookie]
-     * @return void
-     **/
-    public void setCookie(@NonNull String cookie) {
-        httpHeaders.set("Cookie", cookie);
+    @Override
+    public void checkParam() {
     }
 }
