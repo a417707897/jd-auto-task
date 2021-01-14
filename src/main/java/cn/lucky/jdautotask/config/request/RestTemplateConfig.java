@@ -1,6 +1,8 @@
 package cn.lucky.jdautotask.config.request;
 
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -18,7 +20,15 @@ public class RestTemplateConfig {
 
     @Bean
     public RestTemplate restTemplate(){
-        RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create()
+                .setMaxConnTotal(20)
+                .setMaxConnPerRoute(20)
+                .build());
+        httpRequestFactory.setConnectionRequestTimeout(10000);
+        httpRequestFactory.setConnectTimeout(10000);
+        httpRequestFactory.setReadTimeout(10000);
+
+        RestTemplate restTemplate = new RestTemplate(httpRequestFactory);
 
         List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
         for (int i = 0; i < messageConverters.size(); i++) {
@@ -38,7 +48,15 @@ public class RestTemplateConfig {
      * @return org.springframework.web.client.RestTemplate
      **/
     public static synchronized RestTemplate getRestTemplateStringIsUtf8(){
-        RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create()
+                .setMaxConnTotal(100)
+                .setMaxConnPerRoute(100)
+                .build());
+        httpRequestFactory.setConnectionRequestTimeout(10000);
+        httpRequestFactory.setConnectTimeout(10000);
+        httpRequestFactory.setReadTimeout(10000);
+
+        RestTemplate restTemplate = new RestTemplate(httpRequestFactory);
 
         List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
         for (int i = 0; i < messageConverters.size(); i++) {
