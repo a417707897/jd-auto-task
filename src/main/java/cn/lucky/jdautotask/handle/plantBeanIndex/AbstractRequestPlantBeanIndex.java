@@ -1,13 +1,14 @@
-package cn.lucky.jdautotask.pojo.plantBeanIndex;
+package cn.lucky.jdautotask.handle.plantBeanIndex;
 
-import cn.lucky.jdautotask.pojo.common.AbstractRequestInfo;
+import cn.lucky.jdautotask.handle.common.AbstractRequestInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Map;
 
 /*
  * @Author zyl
@@ -72,4 +73,6 @@ public abstract class AbstractRequestPlantBeanIndex extends AbstractRequestInfo<
     }
 
     public abstract void checkParam() throws JsonProcessingException;
+
+    public abstract void setBody(Map<String, String> body);
 }

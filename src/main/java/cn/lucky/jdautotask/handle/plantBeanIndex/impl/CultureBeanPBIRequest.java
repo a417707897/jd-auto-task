@@ -1,7 +1,7 @@
-package cn.lucky.jdautotask.pojo.plantBeanIndex.impl;
+package cn.lucky.jdautotask.handle.plantBeanIndex.impl;
 
 import cn.lucky.jdautotask.pojo.enums.RequestWayType;
-import cn.lucky.jdautotask.pojo.plantBeanIndex.AbstractRequestPlantBeanIndex;
+import cn.lucky.jdautotask.handle.plantBeanIndex.AbstractRequestPlantBeanIndex;
 import cn.lucky.jdautotask.utils.JsonFormatUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * 领取产生的营养液
@@ -35,7 +36,14 @@ public class CultureBeanPBIRequest extends AbstractRequestPlantBeanIndex {
         Assert.notNull(body.get("nutrientsType"),"nutrientsType不能为空");
     }
 
-    public void setBody(@NonNull String roundId, @NonNull String nutrientsType) throws JsonProcessingException {
+    @Override
+    public void setBody(Map<String, String> body) {
+        Assert.notEmpty(body,"请您传入参数");
+        body.put("roundId", "nutrientsType");
+        setBody("nutrientsType", body.get("nutrientsType"));
+    }
+
+    public void setBody(@NonNull String roundId, @NonNull String nutrientsType) {
         param.set("body", JsonFormatUtil.formatKeyValueToStr(
                 Arrays.asList("roundId","nutrientsType"),
                 Arrays.asList(roundId,nutrientsType)

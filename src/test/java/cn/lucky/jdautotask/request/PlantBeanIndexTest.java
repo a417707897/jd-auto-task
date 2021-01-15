@@ -2,9 +2,9 @@ package cn.lucky.jdautotask.request;
 
 
 import cn.lucky.jdautotask.config.request.RestTemplateConfig;
-import cn.lucky.jdautotask.pojo.plantBeanIndex.impl.CultureBeanPBIRequest;
-import cn.lucky.jdautotask.pojo.plantBeanIndex.impl.PlantBeanIndexRequest;
-import cn.lucky.jdautotask.pojo.plantBeanIndex.impl.ReceiveNutrientsPBIRequest;
+import cn.lucky.jdautotask.handle.plantBeanIndex.impl.CultureBeanPBIRequest;
+import cn.lucky.jdautotask.handle.plantBeanIndex.impl.PlantBeanIndexRequest;
+import cn.lucky.jdautotask.handle.plantBeanIndex.impl.ReceiveNutrientsPBIRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,7 +47,7 @@ public class PlantBeanIndexTest {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(body);
 
-        String string = jsonNode.get("code").toString();
+        String string = jsonNode.get("data").toString();
         System.out.println("string = " + string);
         JsonNode data = jsonNode.get("data");
     }

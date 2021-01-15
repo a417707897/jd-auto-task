@@ -1,7 +1,6 @@
-package cn.lucky.jdautotask.pojo.common;
+package cn.lucky.jdautotask.handle.common;
 
 import cn.lucky.jdautotask.pojo.enums.RequestWayType;
-import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -12,9 +11,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /*

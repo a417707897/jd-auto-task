@@ -22,7 +22,7 @@ public class JsonFormatUtil {
      * @param jsonName
      * @param jsonValue
      */
-    public static String formatKeyValueToStr(@NonNull List<String> jsonName, @NonNull List<String> jsonValue) throws JsonProcessingException {
+    public static synchronized String formatKeyValueToStr(@NonNull List<String> jsonName, @NonNull List<String> jsonValue) {
         try {
             if (jsonName.size() != jsonValue.size()) {
                 throw new IllegalArgumentException("jsonName和jsonValue数量不一致");
@@ -38,6 +38,20 @@ public class JsonFormatUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static synchronized String jsonFormatObjectToStr(Object obi) {
+
+        try {
+            return objectMapper.writeValueAsString(obi);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static synchronized ObjectMapper getObjectMapper(){
+        return objectMapper;
     }
 
 }

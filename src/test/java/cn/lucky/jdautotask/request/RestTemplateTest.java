@@ -2,15 +2,12 @@ package cn.lucky.jdautotask.request;
 
 
 import cn.lucky.jdautotask.config.request.RestTemplateConfig;
-import cn.lucky.jdautotask.pojo.plantBeanIndex.impl.PlantBeanIndexRequest;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
-import java.io.IOException;
+
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
