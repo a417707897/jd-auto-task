@@ -7,13 +7,13 @@ package cn.lucky.jdautotask.pojo.enums;
  **/
 public enum RequestWayType {
 
-    GET("get"),
+    GET("GET"),
 
-    POST("post"),
+    POST("POST"),
 
     PUT("PUT"),
 
-    DELETE("delete")
+    DELETE("DELETE")
 
     ;
 

@@ -6,6 +6,7 @@ import cn.hutool.log.dialect.log4j2.Log4j2Log;
 import cn.lucky.jdautotask.handle.common.AbstractJdAutoTaskHandle;
 import cn.lucky.jdautotask.handle.plantBeanIndex.impl.*;
 import cn.lucky.jdautotask.pojo.plantBeanIndex.BubbleInfos;
+import cn.lucky.jdautotask.pojo.plantBeanIndex.DailyTasks;
 import cn.lucky.jdautotask.pojo.plantBeanIndex.FriendInfo;
 import cn.lucky.jdautotask.pojo.request.JdAutoTaskRequest;
 import cn.lucky.jdautotask.utils.AssertUtil;
@@ -39,6 +40,8 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
 
     private String userName;
 
+    List<DailyTasks> dailyTasksList;
+
     @Override
     public void doExecute(JdAutoTaskRequest jdAutoTaskRequest) {
         log.debug("deeeeee");
@@ -71,12 +74,15 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
 
             userName = data.get("plantUserInfo").get("plantNickName").asText();
 
+            dailyTasksList = objectMapper.readValue(JsonFormatUtil.formatJsonNodeToStr(data.get("taskList")), new TypeReference<List<DailyTasks>>() {
+            });
+
             //领取自己的营养液
             receiveNutrients();
             //”帮助“好友收取营养液
             helpFriendsCollect();
-            //做任务
-
+            //做日常任务
+            dailyTasks();
 
 
 
@@ -90,6 +96,54 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * 做日常任务
+     */
+    private void dailyTasks() {
+        log.info("{},开始做日常任务",userName);
+        if (dailyTasksList == null || dailyTasksList.size() == 0) {
+            log.warn("{},日常任务列表获取失败",userName);
+            return;
+        }
+
+        ReceiveNutrientsTaskPBIRequest receiveNutrientsTaskPBIRequest = null;
+        for (DailyTasks dailyTasks : dailyTasksList) {
+            if (1==dailyTasks.getIsFinished()) {
+                log.info("{},任务名称：{},已经完成", userName, dailyTasks.getTaskName());
+                continue;
+            }
+
+            if (8==dailyTasks.getTaskType()) {
+                log.info("{},任务未完成,{}需自行手动去京东APP完成,{}营养液",userName,dailyTasks.getTaskName(),dailyTasks.getDesc());
+                continue;
+            }
+
+            if (1==dailyTasks.getDailyTimes()) {
+                log.info("{},领取营养液任务,任务名称：{}",userName,dailyTasks.getTaskName());
+                receiveNutrientsTaskPBIRequest = new ReceiveNutrientsTaskPBIRequest();
+                receiveNutrientsTaskPBIRequest.setCookie(cookie);
+                receiveNutrientsTaskPBIRequest.setBody(dailyTasks.getAwardType().toString());
+                String execute = receiveNutrientsTaskPBIRequest.execute(restTemplate);
+                /**
+                 * {"code":"0","data":{"nutrState":"1","nutrNum":1,"nutrToast":"恭喜你获得营养液，快去培养小小豆吧"}}
+                 * {"code":"0","data":{"nutrState":"3","nutrNum":0,"nutrToast":""}}
+                 */
+
+
+
+
+            }
+
+
+
+
+        }
+
+
+
     }
 
     /**

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
@@ -50,19 +51,20 @@ public abstract class AbstractRequestPlantBeanIndex extends AbstractRequestInfo<
         Assert.notEmpty(httpHeaders.get("Cookie"), "Cookie不能为空");
         Assert.notEmpty(param.get("functionId"), "functionId不能为空");
         Assert.notEmpty(param.get("body"), "body不能为空");
+        Assert.notNull(httpMethod, "请求方式不能为空");
         try {
             this.checkParam();
             log.debug("url:【{}】,开始请求", this.url);
             //链接化
             super.paramLinkSet();
 
-            ResponseEntity<String> responseEntity = restTemplate.postForEntity(this.url,
+            ResponseEntity<String> exchange = restTemplate.exchange(this.url,
+                    httpMethod,
                     super.getHttpEntityOnlyHeaders(),
                     String.class,
-                    super.getPlaceholderValue()
-            );
+                    super.getPlaceholderValue());
 
-            return responseEntity.getBody();
+            return exchange.getBody();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("请求出现异常");

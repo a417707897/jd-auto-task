@@ -6,6 +6,7 @@ import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -40,7 +41,7 @@ public abstract class AbstractRequestInfo<T> {
     protected MultiValueMap<String, String> param;
 
     //请求方式
-    protected RequestWayType requestWayType;
+    protected HttpMethod httpMethod;
 
     //占位符value
     protected Map<String,String> placeholderValue;

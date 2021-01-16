@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpMethod;
 import org.springframework.util.Assert;
 
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class CollectUserNutrPBIRequest extends AbstractRequestPlantBeanIndex {
         //设置请求url
         url = "https://api.m.jd.com/client.action";
         //设置请求方式
-        requestWayType = RequestWayType.POST;
+        httpMethod = HttpMethod.POST;
     }
 
 
