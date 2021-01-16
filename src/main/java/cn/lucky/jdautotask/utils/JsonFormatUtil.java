@@ -1,9 +1,12 @@
 package cn.lucky.jdautotask.utils;
 
+import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +51,13 @@ public class JsonFormatUtil {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static synchronized String formatJsonNodeToStr(JsonNode jsonNode){
+        Assert.notNull(jsonNode, "json不能为空");
+        String jsonStr = jsonNode.toString();
+        jsonStr.substring(1, jsonStr.length() - 1);
+        return jsonStr;
     }
 
     public static synchronized ObjectMapper getObjectMapper(){

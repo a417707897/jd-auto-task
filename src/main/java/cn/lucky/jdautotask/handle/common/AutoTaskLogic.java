@@ -16,7 +16,7 @@ public interface AutoTaskLogic<T> {
      * @Param []
      * @return void
      **/
-    void doExecute(T t);
+    void doExecute(T t) throws InterruptedException;
 
     /*
      * @Author zyl

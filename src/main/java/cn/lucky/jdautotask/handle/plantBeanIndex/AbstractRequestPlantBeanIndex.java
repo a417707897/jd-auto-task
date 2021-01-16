@@ -1,8 +1,10 @@
 package cn.lucky.jdautotask.handle.plantBeanIndex;
 
 import cn.lucky.jdautotask.handle.common.AbstractRequestInfo;
+import cn.lucky.jdautotask.utils.JsonFormatUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.NonNull;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
@@ -15,7 +17,7 @@ import java.util.Map;
  * @Description 抽象出种豆得豆配置
  * @Date 2021/1/11 14:13
  **/
-@Slf4j
+@Log4j2
 public abstract class AbstractRequestPlantBeanIndex extends AbstractRequestInfo<String> {
 
     //设置通用的头信息
@@ -37,6 +39,12 @@ public abstract class AbstractRequestPlantBeanIndex extends AbstractRequestInfo<
 
     @Override
     public String execute(RestTemplate restTemplate) {
+        //不能请求频繁
+        try {
+            Thread.sleep(2000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Assert.notNull(restTemplate, "restTemplate参数不能为空");
         Assert.notNull(this.url, "url参数不能为空");
         Assert.notEmpty(httpHeaders.get("Cookie"), "Cookie不能为空");
@@ -69,10 +77,14 @@ public abstract class AbstractRequestPlantBeanIndex extends AbstractRequestInfo<
      * @return void
      **/
     public void setCookie(@NonNull String cookie) {
+        httpHeaders.remove("Cookie");
         httpHeaders.set("Cookie", cookie);
     }
 
-    public abstract void checkParam() throws JsonProcessingException;
+    protected abstract void checkParam() throws JsonProcessingException;
 
-    public abstract void setBody(Map<String, String> body);
+    public void setBody(Map<String, String> body){
+        param.remove("body");
+        param.set("body", JsonFormatUtil.jsonFormatObjectToStr(body));
+    }
 }

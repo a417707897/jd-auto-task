@@ -3,6 +3,7 @@ package cn.lucky.jdautotask.handle.plantBeanIndex.impl;
 import cn.lucky.jdautotask.pojo.enums.RequestWayType;
 import cn.lucky.jdautotask.handle.plantBeanIndex.AbstractRequestPlantBeanIndex;
 import cn.lucky.jdautotask.utils.JsonFormatUtil;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,9 +13,10 @@ import java.util.Map;
  * @Description 获取任务及基本信息
  * @Date 2021/1/11 14:14
  **/
-public class PlantBeanIndexRequest extends AbstractRequestPlantBeanIndex {
+@Log4j2
+public class PlantBeanIndexPBIRequest extends AbstractRequestPlantBeanIndex {
 
-    public PlantBeanIndexRequest() {
+    public PlantBeanIndexPBIRequest() {
         param.set("functionId", "plantBeanIndex");
         //设置请求url
         url = "https://api.m.jd.com/client.action";
@@ -25,9 +27,8 @@ public class PlantBeanIndexRequest extends AbstractRequestPlantBeanIndex {
     }
 
     @Override
-    public void checkParam() {
+    protected void checkParam() {
     }
-
 
 
     @Override

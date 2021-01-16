@@ -3,7 +3,12 @@ package cn.lucky.jdautotask.handle;
 import cn.lucky.jdautotask.handle.plantBeanIndex.PlantBeanIndexHandle;
 import cn.lucky.jdautotask.pojo.request.JdAutoTaskRequest;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class PlantBeanIndexHandleTest {
 
     @Test
@@ -12,7 +17,8 @@ public class PlantBeanIndexHandleTest {
         //请求实体
         JdAutoTaskRequest jdAutoTaskRequest = JdAutoTaskRequest
                 .builder()
-                .cookie("pt_key=AAJf5w7aADAy8wXy7TrGhb6ico1jELCHQJTC7npw114j2KN2VB3EblC4297Hk5PKX433RhGRHDc;pt_pin=18337656372_p")
+//                .cookie("pt_key=AAJf5w7aADAy8wXy7TrGhb6ico1jELCHQJTC7npw114j2KN2VB3EblC4297Hk5PKX433RhGRHDc;pt_pin=18337656372_p")
+                .cookie("pt_key=AAJf98fdADAkTZxZqh2W5jOskf7cA0YaKQDNWcqyX5sTPK_YeQqxgdGKHZjssizJDjam8k6G-ME;pt_pin=jd_SBznbkgNHMvQ")
                 .build();
 
         plantBeanIndexHandle.doExecute(jdAutoTaskRequest);

@@ -2,8 +2,10 @@ package cn.lucky.jdautotask.pojo.plantBeanIndex;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class BubbleInfos {
+public class BubbleInfos implements Serializable {
 
 
     /**
@@ -13,6 +15,8 @@ public class BubbleInfos {
      */
 
     private String nutrientsType;
+
     private String name;
-    private int nutrNum;
+
+    private Integer nutrNum;
 }

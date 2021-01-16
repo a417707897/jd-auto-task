@@ -1,51 +1,51 @@
 package cn.lucky.jdautotask.handle.plantBeanIndex.impl;
 
-import cn.lucky.jdautotask.pojo.enums.RequestWayType;
+import cn.hutool.core.util.StrUtil;
 import cn.lucky.jdautotask.handle.plantBeanIndex.AbstractRequestPlantBeanIndex;
+import cn.lucky.jdautotask.pojo.enums.RequestWayType;
+import cn.lucky.jdautotask.utils.AssertUtil;
 import cn.lucky.jdautotask.utils.JsonFormatUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 领取自己的营养液
+ * 偷取好友营养液
  */
 @Log4j2
-public class ReceiveNutrientsPBIRequest extends AbstractRequestPlantBeanIndex {
+public class CollectUserNutrPBIRequest extends AbstractRequestPlantBeanIndex {
 
-    public ReceiveNutrientsPBIRequest(){
-        param.set("functionId", "receiveNutrients");
+
+
+    public CollectUserNutrPBIRequest(){
+        param.set("functionId", "collectUserNutr");
         //设置请求url
         url = "https://api.m.jd.com/client.action";
         //设置请求方式
         requestWayType = RequestWayType.POST;
     }
 
-    /**
-     * 校验roundId值是否为空
-     */
+
+
+
     @Override
     protected void checkParam() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode body = objectMapper.readTree(this.param.get("body").get(0));
-        JsonNode roundId = body.get("roundId");
-        Assert.notNull(roundId, "roundId不能为空");
+        ObjectMapper objectMapper = JsonFormatUtil.getObjectMapper();
+        JsonNode body = objectMapper.readTree(param.get("body").get(0));
+        Assert.notNull(body.get("paradiseUuid"), "paradiseUuid参数为空");
+        Assert.notNull(body.get("roundId"), "roundId参数为空");
     }
 
-    public void setBody(@NonNull String roundId) {
+    public void setBody(@NonNull String paradiseUuid, @NonNull String roundId){
         Map<String, String> map = new HashMap<>();
+        map.put("paradiseUuid", paradiseUuid);
         map.put("roundId", roundId);
-        map.put("monitor_refer", "plant_receiveNutrients");
         setBody(map);
     }
-
-
 }

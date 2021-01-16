@@ -1,9 +1,13 @@
 package cn.lucky.jdautotask.handle.common;
 
+import cn.lucky.jdautotask.config.request.RestTemplateConfig;
 import cn.lucky.jdautotask.pojo.request.JdAutoTaskRequest;
+import cn.lucky.jdautotask.utils.JsonFormatUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.Map;
 
 /*
@@ -15,6 +19,13 @@ public abstract class AbstractJdAutoTaskHandle implements AutoTaskLogic<JdAutoTa
 
 
     protected RestTemplate restTemplate;
+
+    protected ObjectMapper objectMapper;
+
+    public AbstractJdAutoTaskHandle(){
+        restTemplate=RestTemplateConfig.getRestTemplateStringIsUtf8();
+        objectMapper = JsonFormatUtil.getObjectMapper();
+    }
 
     /*
      * @Author zyl

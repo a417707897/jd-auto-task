@@ -2,6 +2,7 @@ package cn.lucky.jdautotask.handle.common;
 
 import cn.lucky.jdautotask.pojo.enums.RequestWayType;
 import lombok.Data;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +21,7 @@ import java.util.Map;
  * @Date 2021/1/8 13:53
  **/
 @Data
-@Slf4j
+@Log4j2
 public abstract class AbstractRequestInfo<T> {
 
     //初始化
@@ -86,6 +87,7 @@ public abstract class AbstractRequestInfo<T> {
     public void paramLinkSet(){
         Assert.notNull(url, "url不能为空");
         Assert.notNull(param, "参数不能为空");
+        log.debug("url：{}，开始进行链式拼接",url);
 
         //拼接url
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.url);
@@ -105,10 +107,10 @@ public abstract class AbstractRequestInfo<T> {
             builder.queryParam(key, value);
         });
 
-        log.info("url:【{}】,拼接成功,拼接后的效果:【{}】", this.url, builder.build().toString());
+        log.debug("url:【{}】,拼接成功,拼接后的效果:【{}】", this.url, builder.build().toString());
         this.url = builder.build().toString();
     }
 
-    public abstract T execute(RestTemplate restTemplate);
+    public abstract T execute(RestTemplate restTemplate) throws InterruptedException;
 
 }

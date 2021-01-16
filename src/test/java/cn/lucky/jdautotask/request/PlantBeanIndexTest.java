@@ -3,7 +3,8 @@ package cn.lucky.jdautotask.request;
 
 import cn.lucky.jdautotask.config.request.RestTemplateConfig;
 import cn.lucky.jdautotask.handle.plantBeanIndex.impl.CultureBeanPBIRequest;
-import cn.lucky.jdautotask.handle.plantBeanIndex.impl.PlantBeanIndexRequest;
+import cn.lucky.jdautotask.handle.plantBeanIndex.impl.PlantBeanIndexPBIRequest;
+import cn.lucky.jdautotask.handle.plantBeanIndex.impl.PlantFriendListPBIRequest;
 import cn.lucky.jdautotask.handle.plantBeanIndex.impl.ReceiveNutrientsPBIRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -27,7 +28,7 @@ public class PlantBeanIndexTest {
     @Before
     public void init(){
         restTemplate = RestTemplateConfig.getRestTemplateStringIsUtf8();
-        cookie = "pt_key=AAJf98fdADAkTZxZqh2W5jOskf7cA0YaKQDNWcqyX5sTPK_YeQqxgdGKHZjssizJDjam8k6G-ME;pt_pin=jd_SBznbkgNHMvQ";
+        cookie = "pt_key=AAJf5w7aADAy8wXy7TrGhb6ico1jELCHQJTC7npw114j2KN2VB3EblC4297Hk5PKX433RhGRHDc;pt_pin=18337656372_p";
     }
 
     /*
@@ -39,7 +40,7 @@ public class PlantBeanIndexTest {
      **/
     @Test
     public void requestPlantBeanIndex() throws IOException {
-        PlantBeanIndexRequest plantBeanIndexRequest = new PlantBeanIndexRequest();
+        PlantBeanIndexPBIRequest plantBeanIndexRequest = new PlantBeanIndexPBIRequest();
         plantBeanIndexRequest.setCookie(cookie);
 
         String body = plantBeanIndexRequest.execute(restTemplate);
@@ -79,6 +80,17 @@ public class PlantBeanIndexTest {
         String execute = cultureBeanPBIRequest.execute(restTemplate);
         System.out.println("execute = " + execute);
 
+    }
+
+    @Test
+    public void plantFriendListPBIRequestTest(){
+        PlantFriendListPBIRequest plantFriendListPBIRequest = new PlantFriendListPBIRequest();
+
+        plantFriendListPBIRequest.setBody("2");
+        plantFriendListPBIRequest.setCookie(cookie);
+
+        String execute = plantFriendListPBIRequest.execute(restTemplate);
+        System.out.println("execute = " + execute);
     }
 
 }
