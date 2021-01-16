@@ -1,4 +1,4 @@
-package cn.lucky.jdautotask.handle.plantBeanIndex.impl;
+package cn.lucky.jdautotask.handle.plantBeanIndex;
 
 import cn.lucky.jdautotask.handle.plantBeanIndex.AbstractRequestPlantBeanIndex;
 

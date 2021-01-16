@@ -1,9 +1,7 @@
 package cn.lucky.jdautotask.handle.common;
 
-import cn.lucky.jdautotask.pojo.enums.RequestWayType;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

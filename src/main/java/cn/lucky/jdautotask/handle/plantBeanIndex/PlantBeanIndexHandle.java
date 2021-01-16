@@ -44,7 +44,6 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
 
     @Override
     public void doExecute(JdAutoTaskRequest jdAutoTaskRequest) {
-        log.debug("deeeeee");
         AssertUtil.strNotNull(jdAutoTaskRequest.getCookie(), "cookie不能为空");
         cookie = jdAutoTaskRequest.getCookie();
         /**
@@ -130,6 +129,7 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
                 /**
                  * {"code":"0","data":{"nutrState":"1","nutrNum":1,"nutrToast":"恭喜你获得营养液，快去培养小小豆吧"}}
                  * {"code":"0","data":{"nutrState":"3","nutrNum":0,"nutrToast":""}}
+                 * 明天写
                  */
 
 

@@ -1,19 +1,15 @@
 package cn.lucky.jdautotask.handle.plantBeanIndex.impl;
 
-import cn.lucky.jdautotask.pojo.enums.RequestWayType;
 import cn.lucky.jdautotask.handle.plantBeanIndex.AbstractRequestPlantBeanIndex;
 import cn.lucky.jdautotask.utils.AssertUtil;
-import cn.lucky.jdautotask.utils.JsonFormatUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.Assert;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

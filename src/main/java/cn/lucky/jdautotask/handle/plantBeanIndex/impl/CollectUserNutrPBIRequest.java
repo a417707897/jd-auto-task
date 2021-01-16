@@ -1,9 +1,6 @@
 package cn.lucky.jdautotask.handle.plantBeanIndex.impl;
 
-import cn.hutool.core.util.StrUtil;
 import cn.lucky.jdautotask.handle.plantBeanIndex.AbstractRequestPlantBeanIndex;
-import cn.lucky.jdautotask.pojo.enums.RequestWayType;
-import cn.lucky.jdautotask.utils.AssertUtil;
 import cn.lucky.jdautotask.utils.JsonFormatUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

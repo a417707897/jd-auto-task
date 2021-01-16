@@ -1,6 +1,5 @@
 package cn.lucky.jdautotask.handle.plantBeanIndex.impl;
 
-import cn.lucky.jdautotask.pojo.enums.RequestWayType;
 import cn.lucky.jdautotask.handle.plantBeanIndex.AbstractRequestPlantBeanIndex;
 import cn.lucky.jdautotask.utils.JsonFormatUtil;
 import lombok.extern.log4j.Log4j2;
