@@ -2,6 +2,7 @@ package cn.lucky.jdautotask.request;
 
 
 import cn.lucky.jdautotask.config.request.RestTemplateConfig;
+import cn.lucky.jdautotask.handle.notification.ScFtqqNoticeRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +43,23 @@ public class RestTemplateTest {
     public void requestIp() {
         String s = restTemplate.getForObject("http://www.httpbin.org/ip", String.class,null,null);
         System.out.println("s = " + s);
+    }
+    @Test
+    public void scFtqqNoticeRequestTest() throws InterruptedException {
+        ScFtqqNoticeRequest scFtqqNoticeRequest = new ScFtqqNoticeRequest(
+                "测试99",
+                "SCU101314T40cf284bbffa8b04ecabcb0de0fd39125ee1bf1788f46"
+        );
+
+        scFtqqNoticeRequest.setNotice("\\|标题1\\|标题2\\|标题3\\|标题4\\|\n" +
+                "\\|-\\|-\\-\\|-\\|\n" +
+                "\\|1\\|\\|\\|\\|\n" +
+                "\\|2\\|\\|\\|\\|\n" +
+                "\\|3\\\\|\\|\\|");
+        String execute = scFtqqNoticeRequest.execute(restTemplate);
+        System.out.println("execute = " + execute);
+
+
     }
 
 }

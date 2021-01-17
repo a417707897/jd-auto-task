@@ -91,7 +91,8 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
 
 
         } catch (JsonProcessingException e) {
-            log.error("解析json失败，失败原因：{}",e);
+            e.printStackTrace();
+            log.error("解析json失败");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

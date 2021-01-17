@@ -27,6 +27,7 @@ public abstract class AbstractRequestInfo<T> {
     protected AbstractRequestInfo(){
         httpHeaders = new HttpHeaders();
         param = new LinkedMultiValueMap<>();
+        placeholderValue = new HashMap<>();
     }
 
     //请求链接

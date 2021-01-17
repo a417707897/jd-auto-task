@@ -71,6 +71,8 @@ public class DailyTasks {
     private Integer mpSpecial;
     private String otherConf;
     private String iconUrlNew;
+
+    private Long lastUpdateTime;
     
     private Integer isDmp;
 }
