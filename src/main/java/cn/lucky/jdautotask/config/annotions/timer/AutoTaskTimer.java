@@ -21,4 +21,7 @@ public @interface AutoTaskTimer {
 
     //定时器说明
     String timerDesc() default "";
+
+    //分组
+    String group() default "DEFAULT_GROUP";
 }
