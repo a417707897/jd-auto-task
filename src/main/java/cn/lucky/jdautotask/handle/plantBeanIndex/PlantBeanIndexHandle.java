@@ -12,6 +12,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -217,11 +219,7 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
                         }
                     }
                 }
-            }
-
-
-            //挑选商品
-            if (5 == dailyTasks.getTaskType()) {
+            }else if (5 == dailyTasks.getTaskType()) {
                 //挑选商品列表
                 ProductTaskListPBIRequest productTaskListPBIRequest
                         = new ProductTaskListPBIRequest();
@@ -285,10 +283,7 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
                     log.warn("未解析到商品信息，请您检查代码");
                     continue;
                 }
-            }
-
-            //关注频道
-            if (10 == dailyTasks.getTaskType()) {
+            } else if (10 == dailyTasks.getTaskType()) {
                 PlantChannelTaskListPBIRequest plantChannelTaskListPBIRequest
                         = new PlantChannelTaskListPBIRequest();
                 plantChannelTaskListPBIRequest.setCookie(cookie);
@@ -361,6 +356,8 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
                     log.warn("频道解析失败");
                     continue;
                 }
+            } else {
+                log.warn("无处理当前日常任务模块，任务名称：{}",dailyTasks.getTaskName());
             }
         }
     }
@@ -532,7 +529,7 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
         }
         //获取请求状态
         String nutrients = data.get("nutrients").asText();
-        if ("4".equals(nutrients)) {
+        if ("1".equals(nutrients)) {
             log.info("{},领取成功，下次领取时间为：{}", userName, DateUtil.format(new Date(data.get("nextReceiveTime").asLong()), "yyyy-MM-dd HH:mm:ss"));
         } else if ("5".equals(nutrients)) {
             log.info("{},已被领取，下次领取时间为：{}", userName, DateUtil.format(new Date(data.get("nextReceiveTime").asLong()), "yyyy-MM-dd HH:mm:ss"));
