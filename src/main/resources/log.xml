@@ -66,6 +66,7 @@ Configuration后面的status，这个用于设置log4j2自身内部的信息输�
         <!--监控系统信息-->
         <!--若是additivity设为false，则 子Logger 只会在自己的appender里输出，而不会在 父Logger 的appender里输出。-->
         <Logger name="org.springframework" level="info" additivity="false">
+            <appender-ref ref="RollingFileDebug" />
             <AppenderRef ref="Console"/>
         </Logger>
 
