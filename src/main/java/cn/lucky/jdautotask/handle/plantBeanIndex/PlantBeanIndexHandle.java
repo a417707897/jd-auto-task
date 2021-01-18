@@ -2,12 +2,9 @@ package cn.lucky.jdautotask.handle.plantBeanIndex;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.log.dialect.log4j2.Log4j2Log;
 import cn.lucky.jdautotask.handle.common.AbstractJdAutoTaskHandle;
 import cn.lucky.jdautotask.handle.plantBeanIndex.impl.*;
-import cn.lucky.jdautotask.pojo.plantBeanIndex.BubbleInfos;
-import cn.lucky.jdautotask.pojo.plantBeanIndex.DailyTasks;
-import cn.lucky.jdautotask.pojo.plantBeanIndex.FriendInfo;
+import cn.lucky.jdautotask.pojo.plantBeanIndex.*;
 import cn.lucky.jdautotask.pojo.request.JdAutoTaskRequest;
 import cn.lucky.jdautotask.utils.AssertUtil;
 import cn.lucky.jdautotask.utils.JsonFormatUtil;
@@ -15,8 +12,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -83,13 +78,8 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
             //做日常任务
             dailyTasks();
 
-
-
-
             //领取活动或偷取产生的营养液
             cultureBean(roundList.get(1).get("bubbleInfos"));
-
-
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             log.error("解析json失败");
@@ -102,49 +92,277 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
     /**
      * 做日常任务
      */
-    private void dailyTasks() {
-        log.info("{},开始做日常任务",userName);
+    private void dailyTasks() throws JsonProcessingException {
+        log.info("{},开始做日常任务", userName);
         if (dailyTasksList == null || dailyTasksList.size() == 0) {
-            log.warn("{},日常任务列表获取失败",userName);
+            log.warn("{},日常任务列表获取失败", userName);
             return;
         }
 
         ReceiveNutrientsTaskPBIRequest receiveNutrientsTaskPBIRequest = null;
         for (DailyTasks dailyTasks : dailyTasksList) {
-            if (1==dailyTasks.getIsFinished()) {
+            if (1 == dailyTasks.getIsFinished()) {
                 log.info("{},任务名称：{},已经完成", userName, dailyTasks.getTaskName());
                 continue;
             }
 
-            if (8==dailyTasks.getTaskType()) {
-                log.info("{},任务未完成,{}需自行手动去京东APP完成,{}营养液",userName,dailyTasks.getTaskName(),dailyTasks.getDesc());
+            if (8 == dailyTasks.getTaskType()) {
+                log.info("{},任务未完成,{}需自行手动去京东APP完成,{}营养液", userName, dailyTasks.getTaskName(), dailyTasks.getDesc());
                 continue;
             }
 
-            if (1==dailyTasks.getDailyTimes()) {
-                log.info("{},领取营养液任务,任务名称：{}",userName,dailyTasks.getTaskName());
+            if (1 == dailyTasks.getDailyTimes()) {
+                log.info("{},领取营养液任务,任务名称：{}", userName, dailyTasks.getTaskName());
                 receiveNutrientsTaskPBIRequest = new ReceiveNutrientsTaskPBIRequest();
                 receiveNutrientsTaskPBIRequest.setCookie(cookie);
-                receiveNutrientsTaskPBIRequest.setBody(dailyTasks.getAwardType().toString());
+                receiveNutrientsTaskPBIRequest.setBody(dailyTasks.getTaskType().toString());
                 String execute = receiveNutrientsTaskPBIRequest.execute(restTemplate);
                 /**
                  * {"code":"0","data":{"nutrState":"1","nutrNum":1,"nutrToast":"恭喜你获得营养液，快去培养小小豆吧"}}
                  * {"code":"0","data":{"nutrState":"3","nutrNum":0,"nutrToast":""}}
-                 * 明天写
                  */
+                JsonNode jsonNode = objectMapper.readTree(execute);
 
+                String code = jsonNode.get("code").asText();
+                if ("0".equals(code)) {
+                    String nutrState = jsonNode.get("data").get("nutrState").asText();
+                    if ("0".equals(nutrState)) {
+                        log.info("日常任务：{}，领取成功", dailyTasks.getTaskName());
+                    } else {
+                        log.info("日常任务：{}，以被领取", dailyTasks.getTaskName());
+                    }
+                } else {
+                    log.warn("日常任务：{}，请求失败", dailyTasks.getTaskName());
+                }
+            }
 
+            log.info("日常任务{}，开始执行", dailyTasks.getTaskName());
+            Integer needTaskNum =
+                    Integer.parseInt(dailyTasks.getTotalNum())
+                            - Integer.parseInt(dailyTasks.getGainedNum());
+            //是否都浏览完了
+            if (needTaskNum == 0) {
+                log.warn("日常任务：{},已完成", dailyTasks.getTaskName());
+                continue;
+            }
+            //浏览店铺
+            if (3 == dailyTasks.getTaskType()) {
+                //获取日常任务商品列表
+                ShopTaskListPBIRequest shopTaskListPBIRequest = new ShopTaskListPBIRequest();
+                shopTaskListPBIRequest.setCookie(cookie);
+                String execute = shopTaskListPBIRequest.execute(restTemplate);
+                JsonNode jsonNode = objectMapper.readTree(execute);
+                String code = jsonNode.get("code").asText();
+                if ("0".equals(code)) {
+                    log.info("日常任务，店铺列表获取成功");
+                } else {
+                    log.info("日常任务，店铺列表请求失败，请求josn：{}", execute);
+                    continue;
+                }
+                //转化json
+                List<ShopTask> goodShopLists = objectMapper
+                        .readValue(JsonFormatUtil.formatJsonNodeToStr(jsonNode.get("data").get("goodShopList")), new TypeReference<List<ShopTask>>() {
+                        });
 
+                List<ShopTask> moreShopLists = objectMapper
+                        .readValue(JsonFormatUtil.formatJsonNodeToStr(jsonNode.get("data").get("moreShopList")), new TypeReference<List<ShopTask>>() {
+                        });
+                //判断是否有商品可浏览
+                if (goodShopLists != null && goodShopLists.size() > 0) {
+                    if (moreShopLists != null && moreShopLists.size() > 0) {
+                        goodShopLists.addAll(moreShopLists);
+                    }
+                } else {
+                    if (moreShopLists != null && moreShopLists.size() > 0) {
+                        goodShopLists = moreShopLists;
+                    } else {
+                        goodShopLists = new ArrayList<>();
+                    }
+                }
 
+                //开始浏览
+                log.info("日常任务，开始浏览店铺");
+                ShopNutrientsTaskPBIRequest shopNutrientsTaskPBIRequest = null;
+                for (ShopTask goodShopList : goodShopLists) {
+                    if (!"2".equals(goodShopList.getTaskState())) {
+                        continue;
+                    }
+                    if (needTaskNum == 0) {
+                        log.info("日常任务浏览店铺已经全部完成");
+                        break;
+                    }
+                    shopNutrientsTaskPBIRequest = new ShopNutrientsTaskPBIRequest();
+                    shopNutrientsTaskPBIRequest.setBody(goodShopList.getShopId(), goodShopList.getShopTaskId());
+                    shopNutrientsTaskPBIRequest.setCookie(cookie);
+                    String execute1 = shopNutrientsTaskPBIRequest.execute(restTemplate);
+                    JsonNode jsonNode1 = objectMapper.readTree(execute1);
+
+                    if (jsonNode1.get("data") == null) {
+                        log.info("店铺：{}浏览失败", goodShopList.getShopName());
+                        continue;
+                    } else {
+                        String nutrState = jsonNode1.get("data").get("nutrState").asText();
+                        if (StrUtil.isBlank(nutrState)) {
+                            log.info("店铺：{}浏览失败", goodShopList.getShopName());
+                            continue;
+                        } else if ("3".equals(nutrState)) {
+                            log.info("店铺：{}已经浏览过了", goodShopList.getShopName());
+                            continue;
+                        } else if ("1".equals(nutrState)) {
+                            log.info("店铺：{}已经浏览成功", goodShopList.getShopName());
+                            needTaskNum--;
+                        } else {
+                            log.info("店铺：{}浏览失败", goodShopList.getShopName());
+                            continue;
+                        }
+                    }
+                }
             }
 
 
+            //挑选商品
+            if (5 == dailyTasks.getTaskType()) {
+                //挑选商品列表
+                ProductTaskListPBIRequest productTaskListPBIRequest
+                        = new ProductTaskListPBIRequest();
+                productTaskListPBIRequest.setCookie(cookie);
+                String execute = productTaskListPBIRequest.execute(restTemplate);
+                JsonNode jsonNode = objectMapper.readTree(execute);
+                String code = jsonNode.get("code").asText();
+                if ("0".equals(code)) {
+                    log.info("日常任务，商品列表获取成功");
+                } else {
+                    log.info("日常任务，商品列表请求失败，请求josn：{}", execute);
+                    continue;
+                }
+                //获取任务列表
+                JsonNode productInfoList = jsonNode.get("data").get("productInfoList");
+                //list格式
+                List<ProductInfo> productInfos = new ArrayList<>();
+                for (JsonNode node : productInfoList) {
+                    productInfos.addAll(objectMapper.readValue(
+                            JsonFormatUtil.formatJsonNodeToStr(node),
+                            new TypeReference<List<ProductInfo>>() {
+                            }));
+                }
+                if (productInfos.size() > 0) {
+                    ProductNutrientsTaskPBIRequest productNutrientsTaskPBIRequest = null;
+                    for (ProductInfo productInfo : productInfos) {
+                        if (!"2".equals(productInfo.getTaskState())) {
+                            continue;
+                        }
+                        if (needTaskNum == 0) {
+                            log.info("日常任务浏览店铺已经全部完成");
+                            break;
+                        }
+                        log.info("日常任务，开始浏览商品，商品名称：{}", productInfo.getProductName());
+                        productNutrientsTaskPBIRequest = new ProductNutrientsTaskPBIRequest();
+                        productNutrientsTaskPBIRequest.setCookie(cookie);
+                        productNutrientsTaskPBIRequest.setBody(productInfo.getProductTaskId(), productInfo.getSkuId());
+                        String execute1 = productNutrientsTaskPBIRequest.execute(restTemplate);
+                        JsonNode jsonNode1 = objectMapper.readTree(execute1);
 
+                        if (jsonNode1.get("data") == null) {
+                            log.info("日常任务，浏览商品失败，商品名称：{}", productInfo.getProductName());
+                            continue;
+                        } else {
+                            String nutrState = jsonNode1.get("data").get("nutrState").asText();
+                            if (StrUtil.isBlank(nutrState)) {
+                                log.info("日常任务，浏览商品失败，商品名称：{}", productInfo.getProductName());
+                                continue;
+                            } else if ("3".equals(nutrState)) {
+                                log.info("日常任务，商品已经浏览过了，商品名称：{}", productInfo.getProductName());
+                            } else if ("1".equals(nutrState)) {
+                                log.info("日常任务，浏览商品成功，商品名称：{}", productInfo.getProductName());
+                                needTaskNum--;
+                            } else {
+                                log.info("日常任务，浏览商品失败，商品名称：{}", productInfo.getProductName());
 
+                            }
+                        }
+                    }
+                } else {
+                    log.warn("未解析到商品信息，请您检查代码");
+                    continue;
+                }
+            }
+
+            //关注频道
+            if (10 == dailyTasks.getTaskType()) {
+                PlantChannelTaskListPBIRequest plantChannelTaskListPBIRequest
+                        = new PlantChannelTaskListPBIRequest();
+                plantChannelTaskListPBIRequest.setCookie(cookie);
+                String execute = plantChannelTaskListPBIRequest.execute(restTemplate);
+                JsonNode jsonNode = objectMapper.readTree(execute);
+                String code = jsonNode.get("code").asText();
+                if ("0".equals(code)) {
+                    log.info("日常任务，频道列表获取成功");
+                } else {
+                    log.info("日常任务，频道列表请求失败，请求josn：{}", execute);
+                    continue;
+                }
+                //获取频道列表
+                List<ChannelTask> channelTaskList = new ArrayList<>();
+
+                channelTaskList.addAll(
+                        objectMapper.readValue(
+                                JsonFormatUtil.formatJsonNodeToStr(jsonNode.get("data").get("goodChannelList")),
+                                new TypeReference<List<ChannelTask>>() {
+                                }
+                        )
+                );
+                channelTaskList.addAll(
+                        objectMapper.readValue(
+                                JsonFormatUtil.formatJsonNodeToStr(jsonNode.get("data").get("normalChannelList")),
+                                new TypeReference<List<ChannelTask>>() {
+                                }
+                        )
+                );
+
+                if (channelTaskList.size() > 0) {
+                    log.info("日常任务，开始浏览频道");
+                    PlantChannelNutrientsTaskPBIRequest plantChannelNutrientsTaskPBIRequest = null;
+
+                    for (ChannelTask channelTask : channelTaskList) {
+                        if (!"2".equals(channelTask.getTaskState())) {
+                            continue;
+                        }
+                        if (needTaskNum == 0) {
+                            log.info("日常任务关注频道已经全部完成");
+                            break;
+                        }
+                        plantChannelNutrientsTaskPBIRequest = new PlantChannelNutrientsTaskPBIRequest();
+                        plantChannelNutrientsTaskPBIRequest.setBody(channelTask.getChannelId(), channelTask.getChannelTaskId());
+                        plantChannelNutrientsTaskPBIRequest.setCookie(cookie);
+                        String execute1 = plantChannelNutrientsTaskPBIRequest.execute(restTemplate);
+                        log.info("频道：{}，浏览成功", channelTask.getChannelName());
+                        JsonNode jsonNode1 = objectMapper.readTree(execute1);
+
+                        if (jsonNode1.get("data") == null) {
+                            log.info("频道：{}，浏览失败", channelTask.getChannelName());
+                            continue;
+                        } else {
+                            String nutrState = jsonNode1.get("data").get("nutrState").asText();
+                            if (StrUtil.isBlank(nutrState)) {
+                                log.info("频道：{}，浏览失败", channelTask.getChannelName());
+                                continue;
+                            } else if ("3".equals(nutrState)) {
+                                log.info("频道：{}，浏览过了", channelTask.getChannelName());
+                            } else if ("1".equals(nutrState)) {
+                                log.info("频道：{}，浏览成功", channelTask.getChannelName());
+                                needTaskNum--;
+                            } else {
+                                log.info("频道：{}，浏览失败", channelTask.getChannelName());
+                                continue;
+                            }
+                        }
+                    }
+                } else {
+                    log.warn("频道解析失败");
+                    continue;
+                }
+            }
         }
-
-
-
     }
 
     /**
@@ -152,7 +370,7 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
      */
     private void helpFriendsCollect() throws JsonProcessingException {
 
-        log.info("{},开始收取好友的营养液",userName);
+        log.info("{},开始收取好友的营养液", userName);
 
         int i = 1;
         List<FriendInfo> friendInfosList = new ArrayList<>();
@@ -162,7 +380,7 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
             if (friendInfos == null) {
                 break;
             }
-            if (friendInfos.size()>0) {
+            if (friendInfos.size() > 0) {
                 friendInfosList.addAll(friendInfos);
             }
         }
@@ -172,14 +390,14 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
             CollectUserNutrPBIRequest collectUserNutrPBIRequest = new CollectUserNutrPBIRequest();
             collectUserNutrPBIRequest.setCookie(cookie);
             for (FriendInfo friendInfo : friendInfosList) {
-                log.info("{},开始偷取好友：{}的营养液",userName,friendInfo.getPlantNickName());
+                log.info("{},开始偷取好友：{}的营养液", userName, friendInfo.getPlantNickName());
                 collectUserNutrPBIRequest.setBody(friendInfo.getParadiseUuid(), currentRoundId);
                 String execute = collectUserNutrPBIRequest.execute(restTemplate);
                 JsonNode jsonNode = objectMapper.readTree(execute);
                 String code = jsonNode.get("code").asText();
 
                 if (!"0".equals(code)) {
-                    log.warn("{},偷取好友营养液失败",userName);
+                    log.warn("{},偷取好友营养液失败", userName);
                     return;
                 }
                 JsonNode data = jsonNode.get("data");
@@ -187,12 +405,12 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
                     return;
                 }
                 if ("1".equals(data.get("collectResult").asText())) {
-                    log.info("{},偷取成功，返回结果:{}",userName, execute);
+                    log.info("{},偷取成功，返回结果:{}", userName, execute);
                 } else if ("3".equals(data.get("collectResult").asText())) {
-                    log.info("{},偷取成功，返回结果:{}", userName,data.get("collectMsg").asText());
+                    log.info("{},偷取成功，返回结果:{}", userName, data.get("collectMsg").asText());
                     return;
                 } else {
-                    log.info("{}，失败的请求",userName);
+                    log.info("{}，失败的请求", userName);
                 }
                 /**
                  * {"code":"0","data":{"collectResult":"1","friendNutrRewards":"1","collectNutrRewards":"1",
@@ -219,7 +437,7 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
         //判断code
         String code = plantFriendList.get("code").asText();
         if (!"0".equals(code)) {
-            log.info("{},种豆得豆，朋友列表请求失败",userName);
+            log.info("{},种豆得豆，朋友列表请求失败", userName);
             return null;
         }
 
@@ -229,8 +447,8 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
         }
 
         JsonNode friendInfoList = data.get("friendInfoList");
-        if (friendInfoList == null || friendInfoList.size()==0) {
-            log.info("{},种豆得豆，宁没有朋友哦！！！",userName);
+        if (friendInfoList == null || friendInfoList.size() == 0) {
+            log.info("{},种豆得豆，宁没有朋友哦！！！", userName);
             return null;
         }
         //解析json
@@ -249,13 +467,14 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
 
     /**
      * 领取产生的营养液
+     *
      * @param bubbleInfos
      * @throws JsonProcessingException
      */
     private void cultureBean(JsonNode bubbleInfos) throws JsonProcessingException, InterruptedException {
-        log.info("{},开始领取帮助好友或做任务的营养液",userName);
+        log.info("{},开始领取帮助好友或做任务的营养液", userName);
         if (bubbleInfos == null) {
-            log.info("{},无产生的营养液可领取",userName);
+            log.info("{},无产生的营养液可领取", userName);
             return;
         }
         String jsonStr = bubbleInfos.toString();
@@ -265,9 +484,8 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
         });
 
 
-
         if (bubbleInfoList == null || bubbleInfoList.size() == 0) {
-            log.info("{},无产生的营养液可领取",userName);
+            log.info("{},无产生的营养液可领取", userName);
             return;
         }
 
@@ -275,7 +493,7 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
         for (BubbleInfos infos : bubbleInfoList) {
             cultureBeanPBIRequest.setBody(currentRoundId, infos.getNutrientsType());
             String execute = cultureBeanPBIRequest.execute(restTemplate);
-            log.info("{},产生营养液名称：{}，领取成功，返回：{}", userName,infos.getName(), execute);
+            log.info("{},产生营养液名称：{}，领取成功，返回：{}", userName, infos.getName(), execute);
         }
     }
 
@@ -309,17 +527,17 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
         JsonNode data = receiveNutrients.get("data");
         if (data == null) {
             //说明领取时间未到
-            log.info("{},领取时间营养液未到，不可领取",userName);
+            log.info("{},领取时间营养液未到，不可领取", userName);
             return;
         }
         //获取请求状态
         String nutrients = data.get("nutrients").asText();
         if ("4".equals(nutrients)) {
-            log.info("{},领取成功，下次领取时间为：{}", userName,DateUtil.format(new Date(data.get("nextReceiveTime").asLong()), "yyyy-MM-dd HH:mm:ss"));
+            log.info("{},领取成功，下次领取时间为：{}", userName, DateUtil.format(new Date(data.get("nextReceiveTime").asLong()), "yyyy-MM-dd HH:mm:ss"));
         } else if ("5".equals(nutrients)) {
-            log.info("{},已被领取，下次领取时间为：{}", userName,DateUtil.format(new Date(data.get("nextReceiveTime").asLong()), "yyyy-MM-dd HH:mm:ss"));
+            log.info("{},已被领取，下次领取时间为：{}", userName, DateUtil.format(new Date(data.get("nextReceiveTime").asLong()), "yyyy-MM-dd HH:mm:ss"));
         } else {
-            log.info("{},种豆得豆，领取自己营养液失败,未知状态，返回json：{}", userName,data,toString());
+            log.info("{},种豆得豆，领取自己营养液失败,未知状态，返回json：{}", userName, data, toString());
         }
     }
 
