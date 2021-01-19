@@ -76,7 +76,8 @@ public class TimerTaskController {
      */
     @GetMapping("/jobDetails")
     public Result getJobDetails(){
-        return Result.success().add("items", timerTaskDetailsMap);
+        Collection<TimerTaskDetails> values = timerTaskDetailsMap.values();
+        return Result.success().add("items", values);
     }
 
     /**
