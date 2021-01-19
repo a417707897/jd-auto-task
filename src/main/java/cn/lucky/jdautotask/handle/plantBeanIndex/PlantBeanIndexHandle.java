@@ -80,6 +80,15 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
             //做日常任务
             dailyTasks();
 
+
+            //需要在请求一遍首页数据，刷新数据，领营养液
+            resultStr = plantBeanIndexRequest.execute(restTemplate);
+            jsonNode = objectMapper.readTree(resultStr);
+            //获取date数据
+            data = jsonNode.get("data");
+            //解析round
+            roundList = data.get("roundList");
+
             //领取活动或偷取产生的营养液
             cultureBean(roundList.get(1).get("bubbleInfos"));
         } catch (JsonProcessingException e) {

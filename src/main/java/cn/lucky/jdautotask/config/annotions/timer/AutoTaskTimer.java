@@ -1,5 +1,7 @@
 package cn.lucky.jdautotask.config.annotions.timer;
 
+import cn.lucky.jdautotask.pojo.enums.TimerGroupType;
+
 import java.lang.annotation.*;
 
 /*
@@ -23,5 +25,5 @@ public @interface AutoTaskTimer {
     String timerDesc() default "";
 
     //分组
-    String group() default "DEFAULT_GROUP";
+    TimerGroupType group() default TimerGroupType.DEFAULT_GROUP;
 }

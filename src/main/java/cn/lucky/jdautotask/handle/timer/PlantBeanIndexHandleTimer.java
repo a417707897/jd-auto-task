@@ -3,6 +3,7 @@ package cn.lucky.jdautotask.handle.timer;
 import cn.hutool.core.date.DateUtil;
 import cn.lucky.jdautotask.config.annotions.timer.AutoTaskTimer;
 import cn.lucky.jdautotask.handle.plantBeanIndex.PlantBeanIndexHandle;
+import cn.lucky.jdautotask.pojo.enums.TimerGroupType;
 import cn.lucky.jdautotask.pojo.request.JdAutoTaskRequest;
 import lombok.extern.log4j.Log4j2;
 import org.quartz.Job;
@@ -18,10 +19,9 @@ import java.util.List;
  * 种豆得豆定时器
  */
 @Component
-@AutoTaskTimer(cron ="0 10 0/3 * * ?", timerName = "PlantBeanIndexHandleTimer", timerDesc = "种豆得豆定时任务", group = "JD_AUTO_TASK")
+@AutoTaskTimer(cron ="0 10 0/3 * * ?", timerName = "PlantBeanIndexHandleTimer", timerDesc = "京东种豆得豆定时任务", group = TimerGroupType.JD_AUTO_TASK)
 @Log4j2
 public class PlantBeanIndexHandleTimer implements Job {
-
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {

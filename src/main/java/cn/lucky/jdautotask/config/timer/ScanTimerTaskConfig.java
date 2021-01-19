@@ -43,7 +43,7 @@ public class ScanTimerTaskConfig {
                 if (autoTaskTimer != null) {
                     TimerTaskDetails timerTaskDetails  = new TimerTaskDetails();
                     timerTaskDetails.setCron(autoTaskTimer.cron());
-                    timerTaskDetails.setGroup(autoTaskTimer.group());
+                    timerTaskDetails.setGroup(autoTaskTimer.group().value());
                     timerTaskDetails.setStatus(0);
                     timerTaskDetails.setTimerDesc(autoTaskTimer.timerDesc());
                     timerTaskDetails.setTimerName(autoTaskTimer.timerName());
@@ -62,7 +62,7 @@ public class ScanTimerTaskConfig {
      * 只提供get方法，不允许修改
      * @return
      */
-    public Map<String, TimerTaskDetails> getTimerTaskDetailsList() {
+    public Map<String, TimerTaskDetails> getTimerTaskDetailsMap() {
         return timerTaskDetailsMap;
     }
 }

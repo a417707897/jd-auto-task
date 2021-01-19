@@ -78,6 +78,7 @@ Configuration后面的status，这个用于设置log4j2自身内部的信息输�
 
         <root level="INFO">
             <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFileDebug" />
         </root>
     </loggers>
 
