@@ -28,6 +28,7 @@ public abstract class AbstractRequestInfo<T> {
         httpHeaders = new HttpHeaders();
         param = new LinkedMultiValueMap<>();
         placeholderValue = new HashMap<>();
+        isLink = false;
     }
 
     //请求链接
@@ -44,6 +45,9 @@ public abstract class AbstractRequestInfo<T> {
 
     //占位符value
     protected Map<String,String> placeholderValue;
+
+    //是否链接化
+    private Boolean isLink;
 
     /*
      * @Author zyl
@@ -85,6 +89,10 @@ public abstract class AbstractRequestInfo<T> {
      * @return void
      **/
     public void paramLinkSet(){
+        if (isLink) {
+            log.warn("已经链接化");
+            return;
+        }
         Assert.notNull(url, "url不能为空");
         Assert.notNull(param, "参数不能为空");
         log.debug("url：{}，开始进行链式拼接",url);
@@ -109,6 +117,7 @@ public abstract class AbstractRequestInfo<T> {
 
         log.debug("url:【{}】,拼接成功,拼接后的效果:【{}】", this.url, builder.build().toString());
         this.url = builder.build().toString();
+        isLink = true;
     }
 
     public abstract T execute(RestTemplate restTemplate) throws InterruptedException;
