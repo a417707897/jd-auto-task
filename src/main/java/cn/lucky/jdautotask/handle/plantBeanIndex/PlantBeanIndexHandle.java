@@ -35,6 +35,9 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
     //上期roundId
     private String lastRoundId;
 
+    //上轮种豆得豆奖励状态
+    private String lastAwardState;
+
     private String userName;
 
     List<DailyTasks> dailyTasksList;
@@ -68,10 +71,30 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
 
             lastRoundId = roundList.get(0).get("roundId").asText();
 
+            lastAwardState = roundList.get(0).get("awardState").asText();
+
             userName = data.get("plantUserInfo").get("plantNickName").asText();
 
             dailyTasksList = objectMapper.readValue(JsonFormatUtil.formatJsonNodeToStr(data.get("taskList")), new TypeReference<List<DailyTasks>>() {
             });
+
+            //判断是否可以领取上一轮奖励
+            if ("4".equals(lastAwardState)) {
+                log.warn("{},【上轮京豆】采摘中", userName);
+            } else if ("5".equals(lastAwardState)) {
+                log.warn("{},开始领取【上轮京豆】", userName);
+                ReceivedBeanPBIRequest receivedBeanPBIRequest = new ReceivedBeanPBIRequest();
+                receivedBeanPBIRequest.setBody(lastRoundId);
+                receivedBeanPBIRequest.setCookie(cookie);
+                String execute = receivedBeanPBIRequest.execute(restTemplate);
+                JsonNode receivedBean = objectMapper.readTree(execute);
+                String receivedBeanCode = receivedBean.get("code").asText();
+                if ("0".equals(receivedBeanCode)) {
+                    log.warn("{},【上轮京豆】领取成功", userName);
+                }
+            } else {
+                log.warn("{},【上轮京豆】以被领取", userName);
+            }
 
             //领取自己的营养液
             receiveNutrients();
@@ -413,7 +436,7 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
                 if ("1".equals(data.get("collectResult").asText())) {
                     log.info("{},偷取成功，返回结果:{}", userName, execute);
                 } else if ("3".equals(data.get("collectResult").asText())) {
-                    log.info("{},偷取成功，返回结果:{}", userName, data.get("collectMsg").asText());
+                    log.info("{},偷取好友营养液今日已达上限，返回结果:{}", userName, data.get("collectMsg").asText());
                     return;
                 } else {
                     log.info("{}，失败的请求", userName);

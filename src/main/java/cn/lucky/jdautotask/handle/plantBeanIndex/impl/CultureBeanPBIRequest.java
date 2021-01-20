@@ -51,6 +51,5 @@ public class CultureBeanPBIRequest extends AbstractRequestPlantBeanIndex {
         map.put("roundId", roundId);
         map.put("nutrientsType", nutrientsType);
         setBody(map);
-        setBody(map);
     }
 }
