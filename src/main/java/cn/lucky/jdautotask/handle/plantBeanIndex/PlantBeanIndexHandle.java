@@ -552,6 +552,7 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
         if (!"0".equals(code)) {
             //请求失败，参数可能出现错误
             log.warn("种豆得豆，领取自己营养液失败，返回：{}", execute);
+            return;
         }
         JsonNode data = receiveNutrients.get("data");
         if (data == null) {
