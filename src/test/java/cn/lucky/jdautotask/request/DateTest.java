@@ -28,9 +28,8 @@ public class DateTest {
 
     @Test
     public void enumTest(){
-
-        TimerGroupType t = TimerGroupType.JD_AUTO_TASK;
-        System.out.println("string = " + t);
+        Integer random = (int)(Math.random() * 1000000);
+        System.out.println("random = " + random);
     }
 
 

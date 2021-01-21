@@ -3,6 +3,7 @@ package cn.lucky.jdautotask.handle.notification;
 import cn.lucky.jdautotask.handle.common.AbstractRequestInfo;
 import cn.lucky.jdautotask.pojo.notification.ScFtqqNotice;
 import cn.lucky.jdautotask.utils.AssertUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.NonNull;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,11 @@ public class ScFtqqNoticeRequest extends AbstractRequestInfo<String> {
 
 
     private ScFtqqNoticeRequest(){}
+
+    @Override
+    protected void checkParam() throws JsonProcessingException {
+
+    }
 
     //设置请求实体
     public ScFtqqNoticeRequest(@NonNull String title,@NonNull String scKey) {

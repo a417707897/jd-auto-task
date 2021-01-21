@@ -1,6 +1,8 @@
 package cn.lucky.jdautotask.handle.common;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Data;
+import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -119,6 +121,25 @@ public abstract class AbstractRequestInfo<T> {
         this.url = builder.build().toString();
         isLink = true;
     }
+
+    /*
+     * @Author zyl
+     * @Description 设置Cookie
+     * @Date 2021/1/14 17:18
+     * @Param [cookie]
+     * @return void
+     **/
+    public void setCookie(@NonNull String cookie) {
+        httpHeaders.remove("Cookie");
+        httpHeaders.set("Cookie", cookie);
+    }
+
+    public void setFunctionId(String functionId){
+        param.remove("functionId");
+        param.set("functionId", functionId);
+    }
+
+    protected abstract void checkParam() throws JsonProcessingException;
 
     public abstract T execute(RestTemplate restTemplate) throws InterruptedException;
 
