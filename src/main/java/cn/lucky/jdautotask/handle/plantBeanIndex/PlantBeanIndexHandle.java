@@ -562,9 +562,9 @@ public class PlantBeanIndexHandle extends AbstractJdAutoTaskHandle {
         //获取请求状态
         String nutrients = data.get("nutrients").asText();
         if ("1".equals(nutrients)) {
-            log.info("{},领取成功，下次领取时间为：{}", userName, DateUtil.format(new Date(data.get("nextReceiveTime").asLong()), "yyyy-MM-dd HH:mm:ss"));
+            log.info("{},种豆得豆,领取成功", userName);
         } else if ("5".equals(nutrients)) {
-            log.info("{},已被领取，下次领取时间为：{}", userName, DateUtil.format(new Date(data.get("nextReceiveTime").asLong()), "yyyy-MM-dd HH:mm:ss"));
+            log.info("{},种豆得豆,已被领取", userName);
         } else {
             log.info("{},种豆得豆，领取自己营养液失败,未知状态，返回json：{}", userName, data, toString());
         }
