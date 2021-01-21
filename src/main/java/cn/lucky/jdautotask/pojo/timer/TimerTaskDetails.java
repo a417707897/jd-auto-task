@@ -24,6 +24,9 @@ public class TimerTaskDetails {
     //定时任务状态，0-关闭，1-开启
     private Integer status;
 
+    //是否正在运行
+    private Integer isRunning;
+
     //任务class
     private Class<Job> jobClass;
 }

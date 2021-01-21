@@ -5,6 +5,9 @@ import cn.lucky.jdautotask.handle.common.Result;
 import cn.lucky.jdautotask.pojo.timer.TimerTaskDetails;
 import cn.lucky.jdautotask.service.timer.TimerTaskService;
 import lombok.extern.log4j.Log4j2;
+import org.quartz.JobExecutionContext;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +34,9 @@ public class TimerTaskController {
     private ScanTimerTaskConfig scanTimerTaskConfig;
 
     private Map<String,TimerTaskDetails> timerTaskDetailsMap;
+
+    @Autowired
+    private Scheduler scheduler;
 
     /**
      * 开启定时任务
@@ -76,9 +82,33 @@ public class TimerTaskController {
      */
     @GetMapping("/jobDetails")
     public Result getJobDetails(){
-        Collection<TimerTaskDetails> values = timerTaskDetailsMap.values();
-        return Result.success().add("items", values);
+        Collection<TimerTaskDetails> timerTaskDetails = timerTaskDetailsMap.values();
+        for (TimerTaskDetails timerTask : timerTaskDetails) {
+            if (getIsRuningTimerName().contains(timerTask.getTimerName())) {
+                timerTask.setIsRunning(1);
+            }
+        }
+        return Result.success().add("items", timerTaskDetails);
     }
+
+
+    private Set<String> getIsRuningTimerName(){
+
+        Set<String> currentJob = new HashSet<>();
+
+        try {
+            List<JobExecutionContext> currentlyExecutingJobs = scheduler.getCurrentlyExecutingJobs();
+            for (JobExecutionContext currentlyExecutingJob : currentlyExecutingJobs) {
+                currentJob.add(currentlyExecutingJob.getJobDetail().getKey().getName());
+            }
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+
+        return currentJob;
+    }
+
+
 
     /**
      * 初始化定时任务

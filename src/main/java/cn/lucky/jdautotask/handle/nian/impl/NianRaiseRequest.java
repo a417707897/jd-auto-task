@@ -10,7 +10,7 @@ import java.util.Map;
 
 /*
  * @Author zyl
- * @Description 激动炸年兽升级接口
+ * @Description 炸年兽升级接口
  * @Date 2021/1/21 16:00
  **/
 public class NianRaiseRequest extends NianCollectProduceScoreRequest {

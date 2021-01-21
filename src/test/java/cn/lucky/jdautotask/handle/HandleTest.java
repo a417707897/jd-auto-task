@@ -1,5 +1,6 @@
 package cn.lucky.jdautotask.handle;
 
+import cn.lucky.jdautotask.handle.nian.GetProduceFirecrackersHandle;
 import cn.lucky.jdautotask.handle.plantBeanIndex.PlantBeanIndexHandle;
 import cn.lucky.jdautotask.pojo.request.JdAutoTaskRequest;
 import org.junit.Test;
@@ -9,10 +10,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class PlantBeanIndexHandleTest {
+public class HandleTest {
 
     @Test
-    public void doExecuteTest(){
+    public void plantBeanIndexHandle(){
         PlantBeanIndexHandle plantBeanIndexHandle = new PlantBeanIndexHandle();
         //请求实体
         JdAutoTaskRequest jdAutoTaskRequest = JdAutoTaskRequest
@@ -22,7 +23,19 @@ public class PlantBeanIndexHandleTest {
                 .build();
 
         plantBeanIndexHandle.doExecute(jdAutoTaskRequest);
+    }
 
 
+    @Test
+    public void getProduceFirecrackersHandle() {
+        GetProduceFirecrackersHandle handle = new GetProduceFirecrackersHandle();
+        //请求实体
+        JdAutoTaskRequest jdAutoTaskRequest = JdAutoTaskRequest
+                .builder()
+                .cookie("pt_key=AAJf5w7aADAy8wXy7TrGhb6ico1jELCHQJTC7npw114j2KN2VB3EblC4297Hk5PKX433RhGRHDc;pt_pin=18337656372_p")
+//                .cookie("pt_key=AAJf98fdADAkTZxZqh2W5jOskf7cA0YaKQDNWcqyX5sTPK_YeQqxgdGKHZjssizJDjam8k6G-ME;pt_pin=jd_SBznbkgNHMvQ")
+                .build();
+
+        handle.doExecute(jdAutoTaskRequest);
     }
 }
