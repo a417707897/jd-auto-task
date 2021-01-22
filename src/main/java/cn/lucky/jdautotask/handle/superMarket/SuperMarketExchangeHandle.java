@@ -81,7 +81,7 @@ public class SuperMarketExchangeHandle extends AbstractJdAutoTaskHandle {
             SuperMarketSmtgObtainPrizeRequest superMarketSmtgObtainPrizeRequest = null;
             //我们只兑换万能京豆和1000京豆，他们的beanType是 BeanPackage Bean
             for (Prize prize : prizeList) {
-                if (506==prize.getInStock()) {
+                if (506 == prize.getInStock()) {
                     log.warn("商品：{}，已经被兑换完", prize.getTitle());
                     continue;
                 } else if ("BeanPackage".equals(prize.getBeanType()) || "Bean".equals(prize.getBeanType())) {
@@ -104,7 +104,7 @@ public class SuperMarketExchangeHandle extends AbstractJdAutoTaskHandle {
                                 smtgObtainPrizeJson.get("data") == null ||
                                 smtgObtainPrizeJson.get("data").get("bizCode") == null
                         ) {
-                            log.warn("东东超市兑换手机接口出错，返回json：{}", execute);
+                            log.warn("东东超市兑换商品：{},接口出错，返回json：{}", prize.getTitle(), execute);
                             return;
                         }
 
@@ -112,7 +112,7 @@ public class SuperMarketExchangeHandle extends AbstractJdAutoTaskHandle {
                         if ("0".equals(bizCode)) {
                             log.info("商品：{}，兑换成功", prize.getTitle());
                         } else {
-                            log.info("商品：{}，兑换失败，返回结果：{}", prize.getTitle(),smtgObtainPrizeJson.get("data").get("bizMsg").asText());
+                            log.info("商品：{}，兑换失败，返回结果：{}", prize.getTitle(), smtgObtainPrizeJson.get("data").get("bizMsg").asText());
                         }
                     }
                 } else {
