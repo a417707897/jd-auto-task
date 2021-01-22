@@ -1,6 +1,7 @@
 package cn.lucky.jdautotask.handle.notification;
 
 import cn.lucky.jdautotask.handle.common.AbstractRequestInfo;
+import cn.lucky.jdautotask.handle.common.AbstractRequestInfoWithExAction;
 import cn.lucky.jdautotask.pojo.notification.ScFtqqNotice;
 import cn.lucky.jdautotask.utils.AssertUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,7 +18,7 @@ import java.util.Map;
 /**
  * server酱，消息通知，目前就一个就不抽取了，直接写
  */
-public class ScFtqqNoticeRequest extends AbstractRequestInfo<String> {
+public class ScFtqqNoticeRequest extends AbstractRequestInfoWithExAction {
 
     private ScFtqqNotice scFtqqNotice;
 
@@ -26,7 +27,6 @@ public class ScFtqqNoticeRequest extends AbstractRequestInfo<String> {
 
     @Override
     protected void checkParam() throws JsonProcessingException {
-
     }
 
     //设置请求实体
@@ -47,7 +47,7 @@ public class ScFtqqNoticeRequest extends AbstractRequestInfo<String> {
 
 
     @Override
-    public String execute(RestTemplate restTemplate) throws InterruptedException {
+    public String execute(RestTemplate restTemplate) {
         Assert.notNull(restTemplate, "请求实体不能为空");
         List<String> notice = scFtqqNotice.getNotice();
         Assert.notEmpty(notice, "发送的消息列表为空");

@@ -29,9 +29,7 @@ public abstract class AbstractRequestInfo<T> {
     protected AbstractRequestInfo(){
         httpHeaders = new HttpHeaders();
         param = new LinkedMultiValueMap<>();
-        placeholderValue = new HashMap<>();
-        isLink = false;
-    }
+        placeholderValue = new HashMap<>(); }
 
     //请求链接
     protected String url;
@@ -48,8 +46,7 @@ public abstract class AbstractRequestInfo<T> {
     //占位符value
     protected Map<String,String> placeholderValue;
 
-    //是否链接化
-    private Boolean isLink;
+
 
     /*
      * @Author zyl
@@ -81,63 +78,6 @@ public abstract class AbstractRequestInfo<T> {
         return httpEntity;
     }
 
-    /*
-     * 因为有些请求需要把参数拼接到url后面，所以，需要把参数拼成，http://a.com/a=1&b=2&c=3格式
-     * 同时需要注意的一点是，如果拼接的参数带{}，这个是站位符的意思，所以需要另外处理
-     *  @Author zyl
-     * @Description 参数链接化
-     * @Date 2021/1/14 15:47
-     * @Param []
-     * @return void
-     **/
-    public void paramLinkSet(){
-        if (isLink) {
-            log.warn("已经链接化");
-            return;
-        }
-        Assert.notNull(url, "url不能为空");
-        Assert.notNull(param, "参数不能为空");
-        log.debug("url：{}，开始进行链式拼接",url);
-
-        //拼接url
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.url);
-        //获取参数所有带{}
-        param.forEach((key,value)->{
-            //判断第一位和最后一位
-            if (value.get(0).substring(0,1).equals("{")) {
-                if (value.get(0).substring(value.get(0).length()-1,value.get(0).length()).equals("}")) {
-                    if (placeholderValue == null) {
-                        placeholderValue = new HashMap<>();
-                    }
-                    placeholderValue.put(key, value.get(0));
-                    //设置为占位符格式数据
-                    value.set(0, "{" + key + "}");
-                }
-            }
-            builder.queryParam(key, value);
-        });
-
-        log.debug("url:【{}】,拼接成功,拼接后的效果:【{}】", this.url, builder.build().toString());
-        this.url = builder.build().toString();
-        isLink = true;
-    }
-
-    /*
-     * @Author zyl
-     * @Description 设置Cookie
-     * @Date 2021/1/14 17:18
-     * @Param [cookie]
-     * @return void
-     **/
-    public void setCookie(@NonNull String cookie) {
-        httpHeaders.remove("Cookie");
-        httpHeaders.set("Cookie", cookie);
-    }
-
-    public void setFunctionId(String functionId){
-        param.remove("functionId");
-        param.set("functionId", functionId);
-    }
 
     protected abstract void checkParam() throws JsonProcessingException;
 

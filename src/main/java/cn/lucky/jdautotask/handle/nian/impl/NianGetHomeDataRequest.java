@@ -17,6 +17,7 @@ public class NianGetHomeDataRequest extends AbstractNianShouRequestPost {
     public NianGetHomeDataRequest() {
         //参数信息
         param.set("functionId", "nian_getHomeData");
+        setBodyByStr("{}");
         //设置请求url
         url = "https://api.m.jd.com/client.action";
     }

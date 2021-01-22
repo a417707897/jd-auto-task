@@ -1,6 +1,7 @@
 package cn.lucky.jdautotask.handle.plantBeanIndex;
 
 import cn.lucky.jdautotask.handle.common.AbstractRequestInfo;
+import cn.lucky.jdautotask.handle.common.AbstractRequestInfoWithExAction;
 import cn.lucky.jdautotask.utils.JsonFormatUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.NonNull;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @Date 2021/1/11 14:13
  **/
 @Log4j2
-public abstract class AbstractRequestPlantBeanIndex extends AbstractRequestInfo<String> {
+public abstract class AbstractRequestPlantBeanIndex extends AbstractRequestInfoWithExAction {
 
     //设置通用的头信息
     protected AbstractRequestPlantBeanIndex() {
@@ -36,43 +37,5 @@ public abstract class AbstractRequestPlantBeanIndex extends AbstractRequestInfo<
         param.set("area", "19_1601_50258_51885");
         param.set("build", "167490");
         param.set("clientVersion", "9.3.2");
-    }
-
-    @Override
-    public String execute(RestTemplate restTemplate) {
-        //不能请求频繁
-        try {
-            Thread.sleep(2000L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Assert.notNull(restTemplate, "restTemplate参数不能为空");
-        Assert.notNull(this.url, "url参数不能为空");
-        Assert.notEmpty(httpHeaders.get("Cookie"), "Cookie不能为空");
-        Assert.notEmpty(param.get("functionId"), "functionId不能为空");
-        Assert.notEmpty(param.get("body"), "body不能为空");
-        Assert.notNull(httpMethod, "请求方式不能为空");
-        try {
-            this.checkParam();
-            log.debug("url:【{}】,开始请求", this.url);
-            //链接化
-            super.paramLinkSet();
-
-            ResponseEntity<String> exchange = restTemplate.exchange(this.url,
-                    httpMethod,
-                    super.getHttpEntityOnlyHeaders(),
-                    String.class,
-                    super.getPlaceholderValue());
-
-            return exchange.getBody();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("请求出现异常");
-        }
-    }
-
-    public void setBody(Map<String, String> body){
-        param.remove("body");
-        param.set("body", JsonFormatUtil.jsonFormatObjectToStr(body));
     }
 }
