@@ -2,9 +2,9 @@ package cn.lucky.jdautotask.handle.superMarket;
 
 import cn.hutool.core.util.StrUtil;
 import cn.lucky.jdautotask.handle.common.AbstractJdAutoTaskHandle;
-import cn.lucky.jdautotask.handle.superMarket.impl.SuperMarketSmtgHomeRequest;
-import cn.lucky.jdautotask.handle.superMarket.impl.SuperMarketSmtgObtainPrizeRequest;
-import cn.lucky.jdautotask.handle.superMarket.impl.SuperMarketSmtgQueryPrizeRequest;
+import cn.lucky.jdautotask.handle.superMarket.exchange.SuperMarketSmtgHomeRequest;
+import cn.lucky.jdautotask.handle.superMarket.exchange.SuperMarketSmtgObtainPrizeRequest;
+import cn.lucky.jdautotask.handle.superMarket.exchange.SuperMarketSmtgQueryPrizeRequest;
 import cn.lucky.jdautotask.pojo.request.JdAutoTaskRequest;
 import cn.lucky.jdautotask.pojo.superMarket.Prize;
 import cn.lucky.jdautotask.utils.JsonFormatUtil;

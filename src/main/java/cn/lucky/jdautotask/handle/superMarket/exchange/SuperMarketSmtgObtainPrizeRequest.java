@@ -1,4 +1,4 @@
-package cn.lucky.jdautotask.handle.superMarket.impl;
+package cn.lucky.jdautotask.handle.superMarket.exchange;
 
 
 import cn.lucky.jdautotask.handle.superMarket.AbstractRequestSuperMarketPost;
