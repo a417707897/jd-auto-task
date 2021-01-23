@@ -2,6 +2,7 @@ package cn.lucky.jdautotask.handle.common;
 
 
 import cn.lucky.jdautotask.utils.JsonFormatUtil;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -22,17 +23,21 @@ public abstract class AbstractRequestInfoWithExAction extends AbstractRequestInf
 
 
     public AbstractRequestInfoWithExAction(){
+        requestInterval = 2000L;
         isLink = false;
     }
 
     //是否链接化
     private Boolean isLink;
 
+    //请求间隔，默认两秒
+    private Long requestInterval;
+
     @Override
     public String execute(RestTemplate restTemplate) {
         //不能请求频繁
         try {
-            Thread.sleep(2000L);
+            Thread.sleep(requestInterval);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -63,6 +68,10 @@ public abstract class AbstractRequestInfoWithExAction extends AbstractRequestInf
     }
 
     public void setBody(Map<String, String> body){
+        param.set("body", JsonFormatUtil.jsonFormatObjectToStr(body));
+    }
+
+    public void setBodyByValueObject(Map<String, Object> body){
         param.set("body", JsonFormatUtil.jsonFormatObjectToStr(body));
     }
 
@@ -125,12 +134,33 @@ public abstract class AbstractRequestInfoWithExAction extends AbstractRequestInf
         isLink = true;
     }
 
+    /**
+     * 校验请求返回是否成功业务调用
+     * @param jsonNode
+     * @return
+     */
+    public Boolean checkResponseToData(JsonNode jsonNode) {
+        if (jsonNode.get("code") == null ||
+                !"0".equals(jsonNode.get("code").asText()) ||
+                jsonNode.get("data") == null
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
 
     //禁止参数链接化
     public void banParamLink() {
         isLink = true;
     }
 
-
-
+    /**
+     * 设置请求间隔
+     * @param requestInterval
+     */
+    public void setRequestInterval(@NonNull Long requestInterval) {
+        this.requestInterval = requestInterval;
+    }
 }

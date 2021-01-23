@@ -3,8 +3,10 @@ package cn.lucky.jdautotask.handle.superMarket;
 
 import cn.lucky.jdautotask.handle.common.AbstractRequestInfo;
 import cn.lucky.jdautotask.handle.common.AbstractRequestInfoWithExAction;
+import cn.lucky.jdautotask.pojo.superMarket.BizResule;
 import cn.lucky.jdautotask.utils.JsonFormatUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,9 @@ import java.util.Date;
 import java.util.Map;
 
 
+/**
+ * 抽象的东东超市请求对象
+ */
 @Log4j2
 public abstract class AbstractRequestSuperMarketPost extends AbstractRequestInfoWithExAction {
 
@@ -32,4 +37,5 @@ public abstract class AbstractRequestSuperMarketPost extends AbstractRequestInfo
         param.set("t", String.valueOf(new Date().getTime()));
         url = "https://api.m.jd.com/api";
     }
+
 }
