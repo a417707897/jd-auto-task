@@ -75,7 +75,7 @@ public abstract class AbstractRequestInfoWithExAction extends AbstractRequestInf
         param.set("body", JsonFormatUtil.jsonFormatObjectToStr(body));
     }
 
-    public void setBodyByStr(String body){
+    protected void setBodyByStr(String body){
         param.set("body", body);
     }
 
@@ -90,7 +90,7 @@ public abstract class AbstractRequestInfoWithExAction extends AbstractRequestInf
         httpHeaders.set("Cookie", cookie);
     }
 
-    public void setFunctionId(String functionId){
+    protected void setFunctionId(String functionId){
         param.set("functionId", functionId);
     }
 

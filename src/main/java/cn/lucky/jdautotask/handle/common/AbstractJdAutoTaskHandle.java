@@ -47,6 +47,20 @@ public abstract class AbstractJdAutoTaskHandle implements AutoTaskLogic<JdAutoTa
     }
 
 
+    /**
+     * 校验东东超市请求返回是否成功业务调用
+     * @param jsonNode
+     * @return
+     */
+    public Boolean checkResponseOblyCode(JsonNode jsonNode) {
+        if (jsonNode.get("code") == null ||
+                !"0".equals(jsonNode.get("code").asText())
+        ) {
+            return false;
+        }
+
+        return true;
+    }
 
 
 

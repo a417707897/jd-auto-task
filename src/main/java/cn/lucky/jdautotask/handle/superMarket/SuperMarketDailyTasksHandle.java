@@ -13,9 +13,7 @@ import cn.lucky.jdautotask.pojo.superMarket.BizResule;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.log4j.Log4j2;
-import org.omg.PortableInterceptor.INACTIVE;
 
-import javax.activation.URLDataSource;
 
 /**
  * 东东超市日常任务处理
@@ -23,8 +21,15 @@ import javax.activation.URLDataSource;
 @Log4j2
 public class SuperMarketDailyTasksHandle extends AbstractJdAutoTaskHandle {
 
+    public SuperMarketDailyTasksHandle() {
+        doTaskNum = 20;
+    }
+
 
     private String cookie;
+
+    //日常任务运行次数，因为需要循环的调用方法，所以，限定次数20次,防止栈溢出
+    private Integer doTaskNum;
 
     @Override
     public void doExecute(JdAutoTaskRequest jdAutoTaskRequest) throws InterruptedException {
@@ -119,7 +124,7 @@ public class SuperMarketDailyTasksHandle extends AbstractJdAutoTaskHandle {
             Integer targetNum = 0;
 
             //需要做任务的次数
-            Integer needTaskNum = 6;
+            Integer needTaskNum = 7;
 
             //循环做任务
             for (JsonNode taskJsonNode : smtgQueryShopTaskJson.get("data").get("result").get("taskList")) {
@@ -209,8 +214,9 @@ public class SuperMarketDailyTasksHandle extends AbstractJdAutoTaskHandle {
                 }
             }
 
-            if (needTaskNum > 0) {
+            if (needTaskNum > 0 && doTaskNum > 0) {
                 doTask();
+                doTaskNum--;
             }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
