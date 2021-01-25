@@ -26,7 +26,8 @@ public class SuperMarketExchangeHandleTimer implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
         SuperMarketExchangeHandle handle = null;
-        List<String> cookies = Arrays.asList("pt_key=AAJf5w7aADAy8wXy7TrGhb6ico1jELCHQJTC7npw114j2KN2VB3EblC4297Hk5PKX433RhGRHDc;pt_pin=18337656372_p",
+        List<String> cookies = Arrays.asList(
+                "pt_key=AAJgDsdeADDg5uvoQcTdzYDZc0e33YQahEttMPRA3Bf6POdTNT4NrWeX_03Y3Lib-hTORP2M5VI;pt_pin=18337656372_p",
                 "pt_key=AAJf98fdADAkTZxZqh2W5jOskf7cA0YaKQDNWcqyX5sTPK_YeQqxgdGKHZjssizJDjam8k6G-ME;pt_pin=jd_SBznbkgNHMvQ");
 
         for (String cookie : cookies) {
