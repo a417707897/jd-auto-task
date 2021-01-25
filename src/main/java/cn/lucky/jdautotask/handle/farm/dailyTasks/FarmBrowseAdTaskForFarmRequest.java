@@ -22,7 +22,7 @@ public class FarmBrowseAdTaskForFarmRequest extends AbstractRequestFarmGet {
      * 浏览
      * @param advertId
      */
-    public void setBrowseBody(@NonNull Long advertId) {
+    public void setBrowseBody(@NonNull String advertId) {
         Map<String, Object> map = new HashMap<>();
         map.put("advertId", advertId);
         map.put("type", 0);
@@ -33,10 +33,10 @@ public class FarmBrowseAdTaskForFarmRequest extends AbstractRequestFarmGet {
      * 领取
      * @param advertId
      */
-    public void setReceiveBody(@NonNull Long advertId) {
+    public void setReceiveBody(@NonNull String advertId) {
         Map<String, Object> map = new HashMap<>();
         map.put("advertId", advertId);
-        map.put("type", 0);
+        map.put("type", 1);
         setBodyByValueObject(map);
     }
 

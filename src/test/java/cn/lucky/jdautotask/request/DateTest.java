@@ -20,8 +20,7 @@ public class DateTest {
      */
     @Test
     public void longToDate(){
-        log.warn("1111");
-        Long dateL = 1767283199000L;
+        Long dateL = 1611569849013L;
         String format = DateUtil.format(new Date(dateL), "yyyy-MM-dd HH:mm:ss");
         System.out.println("format = " + format);
     }

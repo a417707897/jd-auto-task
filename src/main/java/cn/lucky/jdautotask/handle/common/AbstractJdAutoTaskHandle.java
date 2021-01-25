@@ -52,7 +52,10 @@ public abstract class AbstractJdAutoTaskHandle implements AutoTaskLogic<JdAutoTa
      * @param jsonNode
      * @return
      */
-    public Boolean checkResponseOblyCode(JsonNode jsonNode) {
+    public Boolean checkResponseOnlyCode(JsonNode jsonNode) {
+        if (jsonNode == null) {
+            return false;
+        }
         if (jsonNode.get("code") == null ||
                 !"0".equals(jsonNode.get("code").asText())
         ) {
