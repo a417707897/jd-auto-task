@@ -24,6 +24,8 @@ public abstract class AbstractJdAutoTaskHandle implements AutoTaskLogic<JdAutoTa
 
     protected ObjectMapper objectMapper;
 
+    protected String cookie;
+
     public AbstractJdAutoTaskHandle(){
         restTemplate=RestTemplateConfig.getRestTemplateStringIsUtf8();
         objectMapper = JsonFormatUtil.getObjectMapper();
@@ -73,6 +75,9 @@ public abstract class AbstractJdAutoTaskHandle implements AutoTaskLogic<JdAutoTa
      * @return
      */
     public Boolean checkResponseToBiz(JsonNode jsonNode) {
+        if (jsonNode == null) {
+            return false;
+        }
         if (jsonNode.get("code") == null ||
                 !"0".equals(jsonNode.get("code").asText()) ||
                 jsonNode.get("data") == null ||
@@ -93,6 +98,9 @@ public abstract class AbstractJdAutoTaskHandle implements AutoTaskLogic<JdAutoTa
     public BizResule checkResponseToBizReBiz(JsonNode jsonNode) {
 
         BizResule bizResule = new BizResule();
+        if (jsonNode == null) {
+            return bizResule;
+        }
         if (jsonNode.get("code") == null ||
                 !"0".equals(jsonNode.get("code").asText()) ||
                 jsonNode.get("data") == null ||
