@@ -1,5 +1,6 @@
 package cn.lucky.jdautotask.config.controller;
 
+import cn.lucky.jdautotask.handle.common.Result;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.ConstraintViolation;
@@ -15,16 +16,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handle(ValidationException exception) {
+    public Result handle(ValidationException exception) {
+        String msg = "请求异常";
         if(exception instanceof ConstraintViolationException){
             ConstraintViolationException exs = (ConstraintViolationException) exception;
             Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
             for (ConstraintViolation<?> item : violations) {
-                //打印验证不通过的信息
-                System.out.println(item.getMessage());
+                msg += "-" + item.getMessage();
             }
         }
-        return "bad request" ;
+
+        return Result.fail(msg);
     }
 
 

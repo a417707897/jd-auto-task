@@ -30,8 +30,12 @@ public abstract class AbstractNianShouRequestPost extends AbstractRequestInfoWit
         httpHeaders.set("Content-Type", "application/x-www-form-urlencoded");
         httpMethod = HttpMethod.POST;
 
+        url = "https://api.m.jd.com/client.action";
+
         //参数信息
         param.set("client", "wh5");
         param.set("clientVersion", "1.0.0");
+        param.set("body", "{}");
+
     }
 }
