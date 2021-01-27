@@ -108,4 +108,17 @@ public class HandleTest {
 
         handle.doExecute(jdAutoTaskRequest);
     }
+
+    @Test
+    public void test() {
+        //根据参数设置数据源，或者去一个容器取出来
+
+        //代码逻辑
+
+        //查询返回
+
+
+
+
+    }
 }

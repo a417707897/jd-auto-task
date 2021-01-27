@@ -14,7 +14,12 @@ public class JdAutoTaskRequest {
 
     private String cookie;
 
+    //用户设备标识
     private String userAgent;
 
-    private Map<String, String> body;
+    //cookie是否失效  0-失效，1-未失效
+    private Integer cookieFailure;
+
+    //用户名称
+    private String nickname;
 }
