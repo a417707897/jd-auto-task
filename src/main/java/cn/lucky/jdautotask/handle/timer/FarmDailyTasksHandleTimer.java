@@ -30,9 +30,13 @@ public class FarmDailyTasksHandleTimer extends JdTimerJob {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         jdUserInfo.getJdAutoTaskRequestMap().forEach((key,value)->{
-            if (value.getCookieFailure()) {
-                handle = new FarmDailyTasksHandle();
-                handle.doExecute(value);
+            try {
+                if (value.getCookieFailure()) {
+                    handle = new FarmDailyTasksHandle();
+                    handle.doExecute(value);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
     }
