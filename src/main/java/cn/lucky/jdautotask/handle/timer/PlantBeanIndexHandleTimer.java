@@ -2,6 +2,8 @@ package cn.lucky.jdautotask.handle.timer;
 
 import cn.hutool.core.date.DateUtil;
 import cn.lucky.jdautotask.config.annotions.timer.AutoTaskTimer;
+import cn.lucky.jdautotask.handle.common.JdTimerJob;
+import cn.lucky.jdautotask.handle.nian.GetProduceFirecrackersHandle;
 import cn.lucky.jdautotask.handle.plantBeanIndex.PlantBeanIndexHandle;
 import cn.lucky.jdautotask.pojo.enums.TimerGroupType;
 import cn.lucky.jdautotask.pojo.request.JdAutoTaskRequest;
@@ -21,21 +23,19 @@ import java.util.List;
 @Component
 @AutoTaskTimer(cron ="0 1 0/1 * * ?", timerName = "PlantBeanIndexHandleTimer", timerDesc = "京东种豆得豆定时任务", group = TimerGroupType.JD_AUTO_TASK)
 @Log4j2
-public class PlantBeanIndexHandleTimer implements Job {
+public class PlantBeanIndexHandleTimer extends JdTimerJob {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        PlantBeanIndexHandle plantBeanIndexHandle = null;
-        List<String> cookies = Arrays.asList(
-                "pt_key=AAJgDsdeADDg5uvoQcTdzYDZc0e33YQahEttMPRA3Bf6POdTNT4NrWeX_03Y3Lib-hTORP2M5VI;pt_pin=18337656372_p",
-                "pt_key=AAJf98fdADAkTZxZqh2W5jOskf7cA0YaKQDNWcqyX5sTPK_YeQqxgdGKHZjssizJDjam8k6G-ME;pt_pin=jd_SBznbkgNHMvQ");
-        for (String cookie : cookies) {
-            plantBeanIndexHandle = new PlantBeanIndexHandle();
-            JdAutoTaskRequest jdAutoTaskRequest = JdAutoTaskRequest
-                    .builder()
-                    .cookie(cookie)
-                    .build();
-            plantBeanIndexHandle.doExecute(jdAutoTaskRequest);
-        }
+        jdUserInfo.getJdAutoTaskRequestMap().forEach((key,value)->{
+            if (value.getCookieFailure()) {
+                handle = new PlantBeanIndexHandle();
+                try {
+                    handle.doExecute(value);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

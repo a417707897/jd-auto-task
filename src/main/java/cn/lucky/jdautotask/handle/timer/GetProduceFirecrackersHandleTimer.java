@@ -1,6 +1,8 @@
 package cn.lucky.jdautotask.handle.timer;
 
 import cn.lucky.jdautotask.config.annotions.timer.AutoTaskTimer;
+import cn.lucky.jdautotask.handle.common.JdTimerJob;
+import cn.lucky.jdautotask.handle.farm.FarmDailyTasksHandle;
 import cn.lucky.jdautotask.handle.nian.GetProduceFirecrackersHandle;
 import cn.lucky.jdautotask.handle.plantBeanIndex.PlantBeanIndexHandle;
 import cn.lucky.jdautotask.pojo.enums.TimerGroupType;
@@ -20,25 +22,22 @@ import java.util.List;
 @Component
 @AutoTaskTimer(cron ="0 1 0/1 * * ?", timerName = "GetProduceFirecrackersHandleTimer", timerDesc = "京东自动领取爆竹，每小时自动领取", group = TimerGroupType.JD_AUTO_TASK)
 @Log4j2
-public class GetProduceFirecrackersHandleTimer implements Job {
+public class GetProduceFirecrackersHandleTimer extends JdTimerJob {
 
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
-        GetProduceFirecrackersHandle getProduceFirecrackersHandle = null;
-        List<String> cookies = Arrays.asList("pt_key=AAJgDsdeADDg5uvoQcTdzYDZc0e33YQahEttMPRA3Bf6POdTNT4NrWeX_03Y3Lib-hTORP2M5VI;pt_pin=18337656372_p",
-                "pt_key=AAJf98fdADAkTZxZqh2W5jOskf7cA0YaKQDNWcqyX5sTPK_YeQqxgdGKHZjssizJDjam8k6G-ME;pt_pin=jd_SBznbkgNHMvQ");
-
-        for (String cookie : cookies) {
-            getProduceFirecrackersHandle = new GetProduceFirecrackersHandle();
-            JdAutoTaskRequest jdAutoTaskRequest = JdAutoTaskRequest
-                    .builder()
-                    .cookie(cookie)
-                    .build();
-
-            getProduceFirecrackersHandle.doExecute(jdAutoTaskRequest);
-        }
+        jdUserInfo.getJdAutoTaskRequestMap().forEach((key,value)->{
+            if (value.getCookieFailure()) {
+                handle = new GetProduceFirecrackersHandle();
+                try {
+                    handle.doExecute(value);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 }

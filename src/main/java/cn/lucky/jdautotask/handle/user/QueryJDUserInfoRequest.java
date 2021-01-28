@@ -3,6 +3,9 @@ package cn.lucky.jdautotask.handle.user;
 import cn.lucky.jdautotask.handle.common.AbstractRequestInfoWithExAction;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
+import org.springframework.web.client.RestTemplate;
 
 /*
  * @Author zyl
@@ -25,5 +28,18 @@ public class QueryJDUserInfoRequest extends AbstractRequestInfoWithExAction {
 
     @Override
     protected void checkParam() throws JsonProcessingException {
+    }
+
+    @Override
+    public String execute(RestTemplate restTemplate) {
+        Assert.notNull(restTemplate, "请求实体不能为空");
+
+        ResponseEntity<String> exchange = restTemplate.exchange(this.url,
+                httpMethod,
+                super.getHttpEntity(),
+                String.class,
+                super.getPlaceholderValue());
+
+        return exchange.getBody();
     }
 }

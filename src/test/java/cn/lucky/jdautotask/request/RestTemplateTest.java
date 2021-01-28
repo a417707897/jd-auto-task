@@ -3,6 +3,7 @@ package cn.lucky.jdautotask.request;
 
 import cn.lucky.jdautotask.config.request.RestTemplateConfig;
 import cn.lucky.jdautotask.handle.notification.ScFtqqNoticeRequest;
+import cn.lucky.jdautotask.handle.user.QueryJDUserInfoRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,6 +61,14 @@ public class RestTemplateTest {
         System.out.println("execute = " + execute);
 
 
+    }
+
+    @Test
+    public void queryJDUserInfoRequestTest() {
+        QueryJDUserInfoRequest queryJDUserInfoRequest = new QueryJDUserInfoRequest();
+        queryJDUserInfoRequest.setCookie("pt_key=AAJgDsdeADDg5uvoQcTdzYDZc0e33YQahEttMPRA3Bf6POdTNT4NrWeX_03Y3Lib-hTORP2M5VI;pt_pin=18337656372_p");
+        String execute = queryJDUserInfoRequest.execute(restTemplate);
+        System.out.println("execute = " + execute);
     }
 
 }

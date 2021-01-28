@@ -18,7 +18,7 @@ public class JdAutoTaskRequest {
     private String userAgent;
 
     //cookie是否失效  0-失效，1-未失效
-    private Integer cookieFailure;
+    private Boolean cookieFailure;
 
     //用户名称
     private String nickname;
