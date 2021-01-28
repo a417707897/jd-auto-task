@@ -18,10 +18,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 定时领取爆竹并且炸年兽
+ * 东东农场日常任务
  */
 @Component
-@AutoTaskTimer(cron ="0 2 5,6,7,8,14,15,20 * * ? ", timerName = "FarmDailyTasksHandleTimer", timerDesc = "京东农场自动任务", group = TimerGroupType.JD_AUTO_TASK)
+@AutoTaskTimer(cron ="0 1 5,6,7,8,14,15,20 * * ? ", timerName = "FarmDailyTasksHandleTimer", timerDesc = "京东农场自动任务", group = TimerGroupType.JD_AUTO_TASK)
 @Log4j2
 public class FarmDailyTasksHandleTimer extends JdTimerJob {
 
