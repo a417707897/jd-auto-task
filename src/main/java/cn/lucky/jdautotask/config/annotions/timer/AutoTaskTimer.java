@@ -24,6 +24,9 @@ public @interface AutoTaskTimer {
     //定时器说明
     String timerDesc() default "";
 
+    //开启状态
+    boolean status() default true;
+
     //分组
     TimerGroupType group() default TimerGroupType.DEFAULT_GROUP;
 }

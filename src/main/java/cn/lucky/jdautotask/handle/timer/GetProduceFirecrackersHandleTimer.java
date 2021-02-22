@@ -20,7 +20,7 @@ import java.util.List;
  * 定时领取爆竹并且炸年兽
  */
 @Component
-@AutoTaskTimer(cron ="0 1 0/1 * * ?", timerName = "GetProduceFirecrackersHandleTimer", timerDesc = "京东自动领取爆竹，每小时自动领取", group = TimerGroupType.JD_AUTO_TASK)
+@AutoTaskTimer(cron ="0 1 0/1 * * ?",status = false, timerName = "GetProduceFirecrackersHandleTimer", timerDesc = "京东自动领取爆竹，每小时自动领取",group = TimerGroupType.JD_AUTO_TASK)
 @Log4j2
 public class GetProduceFirecrackersHandleTimer extends JdTimerJob {
 

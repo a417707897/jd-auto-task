@@ -60,7 +60,6 @@ public class TimerTaskServiceImpl implements TimerTaskService {
             //提交任务
             scheduler.scheduleJob(jobDetailFactoryBean.getObject(), cronTriggerFactoryBean.getObject());
             log.info("设置：{}定时器成功", timerTaskDetails.getTimerName());
-            timerTaskDetails.setStatus(1);
             return Result.success("设置定时器成功");
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,7 +73,7 @@ public class TimerTaskServiceImpl implements TimerTaskService {
         try {
             TimerTaskDetails timerTaskDetails = scanTimerTaskConfig.getTimerTaskDetailsMap().get(taskName);
             scheduler.deleteJob(JobKey.jobKey(taskName, timerTaskDetails.getGroup()));
-            timerTaskDetails.setStatus(0);
+            timerTaskDetails.setStatus(false);
             return Result.success("停止定时器成功");
         } catch (Exception e) {
             e.printStackTrace();

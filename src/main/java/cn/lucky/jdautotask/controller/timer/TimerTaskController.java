@@ -117,7 +117,9 @@ public class TimerTaskController {
     public void init(){
         timerTaskDetailsMap = scanTimerTaskConfig.getTimerTaskDetailsMap();
         timerTaskDetailsMap.forEach((key,value)->{
-            start(key);
+            if (value.getStatus()) {
+                start(key);
+            }
         });
     }
 }

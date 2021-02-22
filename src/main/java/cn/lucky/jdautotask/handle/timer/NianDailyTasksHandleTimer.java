@@ -11,7 +11,7 @@ import org.quartz.JobExecutionException;
 import org.springframework.stereotype.Component;
 
 @Component
-@AutoTaskTimer(cron ="0 2 0/1 * * ?", timerName = "NianDailyTasksHandleTimer", timerDesc = "年兽日常任务", group = TimerGroupType.JD_AUTO_TASK)
+@AutoTaskTimer(cron ="0 2 0/1 * * ?",status = false, timerName = "NianDailyTasksHandleTimer", timerDesc = "年兽日常任务", group = TimerGroupType.JD_AUTO_TASK)
 @Log4j2
 public class NianDailyTasksHandleTimer extends JdTimerJob {
 

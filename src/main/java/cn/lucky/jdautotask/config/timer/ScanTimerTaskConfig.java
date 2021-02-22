@@ -44,11 +44,12 @@ public class ScanTimerTaskConfig {
                     TimerTaskDetails timerTaskDetails  = new TimerTaskDetails();
                     timerTaskDetails.setCron(autoTaskTimer.cron());
                     timerTaskDetails.setGroup(autoTaskTimer.group().value());
-                    timerTaskDetails.setStatus(0);
-                    timerTaskDetails.setIsRunning(0);
+                    timerTaskDetails.setStatus(autoTaskTimer.status());
                     timerTaskDetails.setTimerDesc(autoTaskTimer.timerDesc());
                     timerTaskDetails.setTimerName(autoTaskTimer.timerName());
                     timerTaskDetails.setJobClass(clazz);
+                    timerTaskDetails.setIsRunning(0);
+
                     if (timerTaskDetailsMap.containsKey(autoTaskTimer.timerName())) {
                         throw new RuntimeException("重复的定时器名称："+autoTaskTimer.timerName());
                     }

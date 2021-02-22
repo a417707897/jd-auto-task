@@ -22,7 +22,7 @@ public class TimerTaskDetails {
     private String group;
 
     //定时任务状态，0-关闭，1-开启
-    private Integer status;
+    private Boolean status;
 
     //是否正在运行
     private Integer isRunning;
