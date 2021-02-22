@@ -80,7 +80,7 @@ public class SuperMarketTimingHandle extends AbstractJdAutoTaskHandle {
                     } else {
                         log.info("货架：【{}】升级失败，返回json：{}", shelf.getName(), execute2);
                     }
-                } else if (shelf.getStatus() == 1) {
+                } else if (shelf.getStatus() == 2) {
                     log.info("当前货架：【{}】可解锁", shelf.getName());
                     SuperMarketSmtgShelfUnlockRequest superMarketSmtgShelfUnlockRequest = new SuperMarketSmtgShelfUnlockRequest();
                     superMarketSmtgShelfUnlockRequest.setCookie(cookie);
