@@ -8,6 +8,7 @@ import cn.lucky.jdautotask.handle.superMarket.SuperMarketDailyTasksHandle;
 import cn.lucky.jdautotask.handle.superMarket.SuperMarketExchangeHandle;
 import cn.lucky.jdautotask.handle.superMarket.SuperMarketTimingHandle;
 import cn.lucky.jdautotask.pojo.request.JdAutoTaskRequest;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,14 +18,20 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class HandleTest {
 
+    private String cookie;
+
+    @Before
+    public void init(){
+        cookie = "pt_key=AAJgN2yyADBHN8rvm_MxQIgxZiQPZOQRWM2oT5ZlwEWKDeMBynynDdrCZxMEtyRTdpC5JcIlhR0;pt_pin=18337656372_p";
+    }
+
     @Test
     public void plantBeanIndexHandle(){
         PlantBeanIndexHandle plantBeanIndexHandle = new PlantBeanIndexHandle();
         //请求实体
         JdAutoTaskRequest jdAutoTaskRequest = JdAutoTaskRequest
                 .builder()
-                .cookie("pt_key=AAJf5w7aADAy8wXy7TrGhb6ico1jELCHQJTC7npw114j2KN2VB3EblC4297Hk5PKX433RhGRHDc;pt_pin=18337656372_p")
-//                .cookie("pt_key=AAJf98fdADAkTZxZqh2W5jOskf7cA0YaKQDNWcqyX5sTPK_YeQqxgdGKHZjssizJDjam8k6G-ME;pt_pin=jd_SBznbkgNHMvQ")
+                .cookie(cookie)
                 .build();
 
         plantBeanIndexHandle.doExecute(jdAutoTaskRequest);
@@ -37,8 +44,7 @@ public class HandleTest {
         //请求实体
         JdAutoTaskRequest jdAutoTaskRequest = JdAutoTaskRequest
                 .builder()
-                .cookie("pt_key=AAJgDsdeADDg5uvoQcTdzYDZc0e33YQahEttMPRA3Bf6POdTNT4NrWeX_03Y3Lib-hTORP2M5VI;pt_pin=18337656372_p")
-//                .cookie("pt_key=AAJf98fdADAkTZxZqh2W5jOskf7cA0YaKQDNWcqyX5sTPK_YeQqxgdGKHZjssizJDjam8k6G-ME;pt_pin=jd_SBznbkgNHMvQ")
+                .cookie(cookie)
                 .build();
 
         handle.doExecute(jdAutoTaskRequest);
@@ -50,8 +56,7 @@ public class HandleTest {
         //请求实体
         JdAutoTaskRequest jdAutoTaskRequest = JdAutoTaskRequest
                 .builder()
-                .cookie("pt_key=AAJf5w7aADAy8wXy7TrGhb6ico1jELCHQJTC7npw114j2KN2VB3EblC4297Hk5PKX433RhGRHDc;pt_pin=18337656372_p")
-//                .cookie("pt_key=AAJf98fdADAkTZxZqh2W5jOskf7cA0YaKQDNWcqyX5sTPK_YeQqxgdGKHZjssizJDjam8k6G-ME;pt_pin=jd_SBznbkgNHMvQ")
+                .cookie(cookie)
                 .build();
 
         handle.doExecute(jdAutoTaskRequest);
@@ -63,8 +68,7 @@ public class HandleTest {
         //请求实体
         JdAutoTaskRequest jdAutoTaskRequest = JdAutoTaskRequest
                 .builder()
-//                .cookie("pt_key=AAJf5w7aADAy8wXy7TrGhb6ico1jELCHQJTC7npw114j2KN2VB3EblC4297Hk5PKX433RhGRHDc;pt_pin=18337656372_p")
-                .cookie("pt_key=AAJf98fdADAkTZxZqh2W5jOskf7cA0YaKQDNWcqyX5sTPK_YeQqxgdGKHZjssizJDjam8k6G-ME;pt_pin=jd_SBznbkgNHMvQ")
+                .cookie(cookie)
                 .build();
 
         handle.doExecute(jdAutoTaskRequest);
@@ -76,8 +80,7 @@ public class HandleTest {
         //请求实体
         JdAutoTaskRequest jdAutoTaskRequest = JdAutoTaskRequest
                 .builder()
-                .cookie("pt_key=AAJgDsdeADDg5uvoQcTdzYDZc0e33YQahEttMPRA3Bf6POdTNT4NrWeX_03Y3Lib-hTORP2M5VI;pt_pin=18337656372_p")
-//                .cookie("pt_key=AAJf98fdADAkTZxZqh2W5jOskf7cA0YaKQDNWcqyX5sTPK_YeQqxgdGKHZjssizJDjam8k6G-ME;pt_pin=jd_SBznbkgNHMvQ")
+                .cookie(cookie)
                 .build();
 
         handle.doExecute(jdAutoTaskRequest);
@@ -89,8 +92,7 @@ public class HandleTest {
         //请求实体
         JdAutoTaskRequest jdAutoTaskRequest = JdAutoTaskRequest
                 .builder()
-                .cookie("pt_key=AAJgDsdeADDg5uvoQcTdzYDZc0e33YQahEttMPRA3Bf6POdTNT4NrWeX_03Y3Lib-hTORP2M5VI;pt_pin=18337656372_p")
-//                .cookie("pt_key=AAJf98fdADAkTZxZqh2W5jOskf7cA0YaKQDNWcqyX5sTPK_YeQqxgdGKHZjssizJDjam8k6G-ME;pt_pin=jd_SBznbkgNHMvQ")
+                .cookie(cookie)
                 .build();
 
         handle.doExecute(jdAutoTaskRequest);
@@ -102,8 +104,7 @@ public class HandleTest {
         //请求实体
         JdAutoTaskRequest jdAutoTaskRequest = JdAutoTaskRequest
                 .builder()
-                .cookie("pt_key=AAJgDsdeADDg5uvoQcTdzYDZc0e33YQahEttMPRA3Bf6POdTNT4NrWeX_03Y3Lib-hTORP2M5VI;pt_pin=18337656372_p")
-//                .cookie("pt_key=AAJf98fdADAkTZxZqh2W5jOskf7cA0YaKQDNWcqyX5sTPK_YeQqxgdGKHZjssizJDjam8k6G-ME;pt_pin=jd_SBznbkgNHMvQ")
+                .cookie(cookie)
                 .build();
 
         handle.doExecute(jdAutoTaskRequest);

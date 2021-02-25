@@ -35,11 +35,7 @@ public class JdUserInfo {
         jdAutoTaskRequestMap = new ConcurrentHashMap<>();
         jdAutoTaskRequestMap.put("18337656372_p", JdAutoTaskRequest.builder()
                 .cookieFailure(false)
-                .cookie("pt_key=AAJgDsdeADDg5uvoQcTdzYDZc0e33YQahEttMPRA3Bf6POdTNT4NrWeX_03Y3Lib-hTORP2M5VI;pt_pin=18337656372_p").build());
-
-        jdAutoTaskRequestMap.put("jd_SBznbkgNHMvQ", JdAutoTaskRequest.builder()
-                .cookieFailure(false)
-                .cookie("pt_key=AAJf98fdADAkTZxZqh2W5jOskf7cA0YaKQDNWcqyX5sTPK_YeQqxgdGKHZjssizJDjam8k6G-ME;pt_pin=jd_SBznbkgNHMvQ").build());
+                .cookie("pt_key=AAJgN2yyADBHN8rvm_MxQIgxZiQPZOQRWM2oT5ZlwEWKDeMBynynDdrCZxMEtyRTdpC5JcIlhR0;pt_pin=18337656372_p").build());
     }
 
     /**
