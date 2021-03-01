@@ -112,7 +112,7 @@ public class SuperMarketTimingHandle extends AbstractJdAutoTaskHandle {
             } else {
                 //开始销售限时物品
                 SuperMarketSmtgSellMerchandiseRequest superMarketSmtgSellMerchandiseRequest = new SuperMarketSmtgSellMerchandiseRequest();
-                superMarketSmtgReceiveCoinRequest.setCookie(cookie);
+                superMarketSmtgSellMerchandiseRequest.setCookie(cookie);
                 for (JsonNode node : merchandiseList) {
                     superMarketSmtgSellMerchandiseRequest.setBody(shopId, node.get("id").asText());
                     String execute2 = superMarketSmtgSellMerchandiseRequest.execute(restTemplate);
