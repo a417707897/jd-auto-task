@@ -101,9 +101,7 @@ public class SuperMarketTimingHandle extends AbstractJdAutoTaskHandle {
             if (forSaleMerchandise == null || forSaleMerchandise.size() == 0) {
                 log.info("货架无在售限时物品");
             } else {
-                for (JsonNode node : forSaleMerchandise) {
-                    log.info("货架，限时物品：{}，已上架", node.get("name").asText());
-                }
+                log.info("货架，限时物品：{}，已上架", forSaleMerchandise.get("name").asText());
             }
 
             JsonNode merchandiseList = jsonNode.get("data").get("result").get("merchandiseList");
